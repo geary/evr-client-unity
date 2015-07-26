@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-[RequireComponent (typeof(Collider))]
+[RequireComponent( typeof(Collider) )]
 
 public class EaseMarker : MonoBehaviour {
 	private bool debug;
 
 	public string markerName;
 	public string objectName;
-	public bool   isObject;
-	public bool   inside;
-	public bool   daytime;
+	public bool isObject;
+	public bool inside;
+	public bool daytime;
 	public string customProp01;
 	public string customProp02;
 	public string customProp03;
@@ -20,25 +20,26 @@ public class EaseMarker : MonoBehaviour {
 	private bool looking;
 
 	// Use this for initialization
-	void Start () {
-		if (this.markerName.Length == 0) {
+	void Start() {
+		if( this.markerName.Length == 0 ) {
 			this.markerName = this.GetInstanceID().ToString();
 		}
 	}
-	
+
 	// Update is called once per frame
-	void Update () {}
+	void Update() {
+	}
 
-	public void onLookStart(string name) {
+	public void onLookStart( string name ) {
 		EaseEvent easeEvent;
-		Dictionary<string, string> eventData;
+		Dictionary< string, string > eventData;
 
 
-		if (looking == false) {
-			Debug.Log ("Ease Marker In <" + name + ">");
+		if( looking == false ) {
+			Debug.Log( "Ease Marker In <" + name + ">" );
 
 			easeEvent = new EaseEvent();
-			easeEvent.send("marker_in", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\", \"marker_name\": \"" + name + "\"}");
+			easeEvent.send( "marker_in", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\", \"marker_name\": \"" + name + "\"}" );
 
 			looking = true;
 
@@ -46,14 +47,14 @@ public class EaseMarker : MonoBehaviour {
 		}
 	}
 
-	public void onLookEnd(string name) {
+	public void onLookEnd( string name ) {
 		EaseEvent easeEvent;
 
-		if (looking == true) {
-			Debug.Log ("Ease Marker Out <" + name + ">");
+		if( looking == true ) {
+			Debug.Log( "Ease Marker Out <" + name + ">" );
 
 			easeEvent = new EaseEvent();
-			easeEvent.send("marker_out", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\", \"marker_name\": \"" + name + "\"}");
+			easeEvent.send( "marker_out", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\", \"marker_name\": \"" + name + "\"}" );
 
 			looking = false;
 

@@ -11,7 +11,7 @@ public class EaseEvent {
 
 		string ourPostData = "_";
 		
-		Hashtable headers = new Hashtable();
+		var headers = new Dictionary<string, string>();
 
 		headers.Add("Content-Type", "application/json");
 		

@@ -13,7 +13,7 @@ public class EaseLook : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// This is not the best implementation. Can see through objects.
-		RaycastHit[] hits = Physics.RaycastAll(camera.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0.5f)));
+		RaycastHit[] hits = Physics.RaycastAll(GetComponent<Camera>().ViewportPointToRay(new Vector3(0.5F, 0.5F, 0.5f)));
 
 		for (int i = 0; i < hits.Length; i++) {
 			if (hits[i].transform.gameObject.GetComponent<EaseMarker>()) {

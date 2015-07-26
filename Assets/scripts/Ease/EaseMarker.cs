@@ -42,7 +42,7 @@ public class EaseMarker : MonoBehaviour {
 
 			looking = true;
 
-			this.renderer.material.color = Color.red;
+			GetComponent<Renderer>().material.color = Color.red;
 		}
 	}
 
@@ -57,7 +57,7 @@ public class EaseMarker : MonoBehaviour {
 
 			looking = false;
 
-			this.renderer.material.color = Color.gray;
+			GetComponent<Renderer>().material.color = Color.gray;
 		}
 	}
 }

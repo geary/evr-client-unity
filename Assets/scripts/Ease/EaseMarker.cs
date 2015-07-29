@@ -1,28 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿//using System.Collections;
+//using System.Collections.Generic;
+using UnityEngine;
 
 
 [RequireComponent( typeof(Collider) )]
 
 public class EaseMarker : MonoBehaviour {
-	private bool debug;
+	//private bool _debug;
 
-	public string markerName;
-	public string objectName;
-	public bool isObject;
-	public bool inside;
-	public bool daytime;
-	public string customProp01;
-	public string customProp02;
-	public string customProp03;
+	public string MarkerName;
+	public string ObjectName;
+	public bool IsObject;
+	public bool Inside;
+	public bool DayTime;
+	//public string CustomProp01;
+	//public string CustomProp02;
+	//public string CustomProp03;
 
-	private bool looking;
+	private bool _looking;
 
 	// Use this for initialization
 	void Start() {
-		if( this.markerName.Length == 0 ) {
-			this.markerName = this.GetInstanceID().ToString();
+		if( MarkerName.Length == 0 ) {
+			MarkerName = GetInstanceID().ToString();
 		}
 	}
 
@@ -30,35 +30,40 @@ public class EaseMarker : MonoBehaviour {
 	void Update() {
 	}
 
-	public void onLookStart( string name ) {
-		EaseEvent easeEvent;
-		Dictionary< string, string > eventData;
+	public void OnLookStart( string name ) {
+		//Dictionary< string, string > eventData;
 
+		if( _looking ) return;
+		_looking = true;
 
-		if( looking == false ) {
-			Debug.Log( "Ease Marker In <" + name + ">" );
+		Debug.Log( "Ease Marker In <" + name + ">" );
 
-			easeEvent = new EaseEvent();
-			easeEvent.send( "marker_in", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\", \"marker_name\": \"" + name + "\"}" );
+		var easeEvent = new EaseEvent();
+		easeEvent.Send( "marker_in", MarkerTimeStampJson() );
 
-			looking = true;
-
-			GetComponent<Renderer>().material.color = Color.red;
-		}
+		GetComponent<Renderer>().material.color = Color.red;
 	}
 
-	public void onLookEnd( string name ) {
-		EaseEvent easeEvent;
+	public void OnLookEnd( string name ) {
+		if( ! _looking ) return;
+		_looking = false;
 
-		if( looking == true ) {
-			Debug.Log( "Ease Marker Out <" + name + ">" );
+		Debug.Log( "Ease Marker Out <" + name + ">" );
 
-			easeEvent = new EaseEvent();
-			easeEvent.send( "marker_out", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\", \"marker_name\": \"" + name + "\"}" );
+		var easeEvent = new EaseEvent();
+		easeEvent.Send( "marker_out", MarkerTimeStampJson() );
 
-			looking = false;
+		GetComponent<Renderer>().material.color = Color.gray;
+	}
 
-			GetComponent<Renderer>().material.color = Color.gray;
-		}
+	private string MarkerTimeStampJson() {
+		// TODO: use JSON serializer
+		return
+			"{\"uuid\": \"" +
+			SystemInfo.deviceUniqueIdentifier +
+			"\", \"timestamp\": \"" +
+			System.DateTime.Now.ToString("yyyyMMddHHmmssffff") +
+			"\", \"marker_name\": \"" +
+			name + "\"}";
 	}
 }

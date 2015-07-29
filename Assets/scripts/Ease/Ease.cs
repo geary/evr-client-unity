@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using System.IO;
-using System.Text;
+﻿//using System;
+//using System.Collections;
+//using System.IO;
+//using System.Text;
+using UnityEngine;
 
 public class Ease : MonoBehaviour {
 	void Awake() {
@@ -13,21 +13,31 @@ public class Ease : MonoBehaviour {
 	void Start() {
 		Debug.Log( SystemInfo.systemMemorySize );
 
-		EaseEvent easeEvent = new EaseEvent();
-		easeEvent.send( "session_start", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\"}" );
+		var easeEvent = new EaseEvent();
+		easeEvent.Send( "session_start", TimeStampJson() );
 	}
 
 	// Update is called once per frame
 	void Update() {
 	}
 
-	void sentUpdate() {
+	void SentUpdate() {
 	}
 
 	void OnApplicationQuit() {
 		Debug.Log( "Session has ended..." );
 
-		EaseEvent easeEvent = new EaseEvent();
-		easeEvent.send( "session_end", "{\"uuid\": \"" + SystemInfo.deviceUniqueIdentifier + "\", \"timestamp\": \"" + System.DateTime.Now.ToString("yyyyMMddHHmmssffff") + "\"}" );
+		var easeEvent = new EaseEvent();
+		easeEvent.Send( "session_end", TimeStampJson() );
+	}
+
+	private string TimeStampJson() {
+		// TODO: use JSON serializer
+		return
+			"{\"uuid\": \"" +
+			SystemInfo.deviceUniqueIdentifier +
+			"\", \"timestamp\": \"" +
+			System.DateTime.Now.ToString("yyyyMMddHHmmssffff") +
+			"\"}";
 	}
 }

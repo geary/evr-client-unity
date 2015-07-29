@@ -1,94 +1,88 @@
-using UnityEngine;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 public class EaseLook : MonoBehaviour {
-	private List<GameObject> lookedAt;
+	private List<GameObject> _lookedAt;
 
 	// Use this for initialization
 	void Start() {
-		lookedAt = new List<GameObject>();
+		_lookedAt = new List<GameObject>();
 	}
 
 	// Update is called once per frame
 	void Update() {
 		// This is not the best implementation. Can see through objects.
-		RaycastHit[] hits = Physics.RaycastAll(
+		var hits = Physics.RaycastAll(
 			GetComponent<Camera>().ViewportPointToRay(
 				new Vector3( 0.5F, 0.5F, 0.5f )
 			)
 		);
 
-		for( int i = 0;  i < hits.Length;  i++ ) {
-			if( hits[i].transform.gameObject.GetComponent<EaseMarker>() ) {
-				addMarker( hits[i].transform.gameObject );
+		foreach( var hit in hits ) {
+			if( hit.transform.gameObject.GetComponent<EaseMarker>() ) {
+				AddMarker( hit.transform.gameObject );
 			}
 		}
 
-
-		removeDeadMarkers( hits );
+		RemoveDeadMarkers( hits );
 	}
 
 	// This will run on every update to check for markers that should be removed
-	void removeDeadMarkers( RaycastHit[] hits ) {
-		bool foundMatch = false;
-		List<GameObject> removableGameObjects;
+	void RemoveDeadMarkers( RaycastHit[] hits ) {
+		var foundMatch = false;
 
-		removableGameObjects = new List<GameObject>();
+		var removableGameObjects = new List<GameObject>();
 
-		foreach( GameObject gameObject in lookedAt ) {
-			for( int i = 0;  i < hits.Length;  i++ ) {
-				if( gameObject.GetInstanceID() == hits[i].transform.gameObject.GetInstanceID() ) {
+		foreach( var lookObject in _lookedAt ) {
+			foreach( var hit in hits ) {
+				if( lookObject.GetInstanceID() == hit.transform.gameObject.GetInstanceID() ) {
 					foundMatch = true;
 					break;
 				}
 			}
 
 			if( ! foundMatch ) {
-				removableGameObjects.Add( gameObject );
+				removableGameObjects.Add( lookObject );
 			}
 		}
 
-		foreach( GameObject gameObjectToRemove in removableGameObjects ) {
-			if( gameObjectToRemove.GetComponent<EaseMarker>() ) {
-				Debug.Log( "Removing marker with ID: " + gameObjectToRemove.GetInstanceID() );
+		foreach( var removeObject in removableGameObjects ) {
+			var removeMarker = removeObject.GetComponent<EaseMarker>();
+			if( removeMarker ) {
+				Debug.Log( "Removing marker with ID: " + removeObject.GetInstanceID() );
 
-				gameObjectToRemove.GetComponent<EaseMarker>().onLookEnd(
-					gameObjectToRemove.GetComponent<EaseMarker>().markerName
-				);
-				lookedAt.Remove( gameObjectToRemove );
+				removeMarker.OnLookEnd( removeMarker.MarkerName );
+				_lookedAt.Remove( removeObject );
 			}
 		}
 	}
 
 	// This will add a marker after it is determined that the marker is not already in the list
-	void addMarker( GameObject marker ) {
-		int runtimeId = marker.GetInstanceID();
-		bool shouldAdd = true;
+	void AddMarker( GameObject marker ) {
+		var easeMarker = marker.GetComponent<EaseMarker>();
+		var runtimeId = marker.GetInstanceID();
+		var shouldAdd = true;
 
 		Debug.Log( "Attempting to add marker with runtime ID: " + runtimeId );
 
-		if( lookedAt.Count == 0 ) {
-			lookedAt.Add( marker );
-			marker.GetComponent<EaseMarker>().onLookStart(
-				marker.GetComponent<EaseMarker>().markerName
-			);
+		if( _lookedAt.Count == 0 ) {
+			_lookedAt.Add( marker );
+			easeMarker.OnLookStart( easeMarker.MarkerName );
 		} else {
-			foreach( GameObject gameObject in lookedAt ) {
-				if( gameObject.GetInstanceID() == runtimeId ) {
+			foreach( var lookObject in _lookedAt ) {
+				if( lookObject.GetInstanceID() == runtimeId ) {
 					shouldAdd = false;
 					break;
 				}
 			}
 
-			if( shouldAdd == true ) {
+			if( shouldAdd ) {
 				Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
 
-				lookedAt.Add( marker );
-				marker.GetComponent<EaseMarker>().onLookStart(
-					marker.GetComponent<EaseMarker>().markerName
-				);
+				_lookedAt.Add( marker );
+				easeMarker.OnLookStart( easeMarker.MarkerName );
 			} else {
 				Debug.Log( "Marker already exists..." );
 			}

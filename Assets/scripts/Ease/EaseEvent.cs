@@ -1,26 +1,27 @@
-using UnityEngine;
-using System.Collections;
+//using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using UnityEngine;
 
 
 public class EaseEvent {
-	private bool DEBUG = false;
+	private const bool DEBUG = true;
 
-	public void send( string type, string data ) {
+	public void Send( string type, string data ) {
 		Debug.Log( "Sending Events: " + type );
 
-		string ourPostData = "_";
+		var headers = new Dictionary< string, string > {
+			{ "Content-Type", "application/json" },
+			{ "event_type", type },
+			{ "event_data", data }
+		};
 
-		var headers = new Dictionary< string, string >();
+		var postData = "_";
+		var bytes = Encoding.ASCII.GetBytes( postData.ToCharArray() );
 
-		headers.Add( "Content-Type", "application/json" );
-
-		byte[] pData = Encoding.ASCII.GetBytes( ourPostData.ToCharArray() );
-
-		headers.Add( "event_type", type );
-		headers.Add( "event_data", data );
-
-		WWW www = new WWW( DEBUG ? "http://127.0.0.1:8080/api/v1/record_event" : "http://ease-solarvr.rhcloud.com/api/v1/record_event", pData, headers );
+		var url =  DEBUG ?
+			"http://127.0.0.1:8080/api/v1/record_event" :
+			"http://ease-solarvr.rhcloud.com/api/v1/record_event";
+		var www = new WWW( url, bytes, headers );
 	}
 }

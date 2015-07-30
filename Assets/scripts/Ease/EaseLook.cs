@@ -29,7 +29,7 @@ public class EaseLook : MonoBehaviour {
 		RemoveDeadMarkers( hits );
 	}
 
-	// This will run on every update to check for markers that should be removed
+	// Check for markers that should be removed
 	void RemoveDeadMarkers( RaycastHit[] hits ) {
 		var foundMatch = false;
 
@@ -59,7 +59,7 @@ public class EaseLook : MonoBehaviour {
 		}
 	}
 
-	// This will add a marker after it is determined that the marker is not already in the list
+	// Add a marker if it is not already in the list
 	void AddMarker( GameObject marker ) {
 		var easeMarker = marker.GetComponent<EaseMarker>();
 		var runtimeId = marker.GetInstanceID();

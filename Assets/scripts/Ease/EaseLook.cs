@@ -65,7 +65,7 @@ public class EaseLook : MonoBehaviour {
 		var runtimeId = marker.GetInstanceID();
 		var shouldAdd = true;
 
-		Debug.Log( "Attempting to add marker with runtime ID: " + runtimeId );
+		//Debug.Log( "Attempting to add marker with runtime ID: " + runtimeId );
 
 		if( _lookedAt.Count == 0 ) {
 			_lookedAt.Add( marker );
@@ -84,7 +84,7 @@ public class EaseLook : MonoBehaviour {
 				_lookedAt.Add( marker );
 				easeMarker.OnLookStart( easeMarker.MarkerName );
 			} else {
-				Debug.Log( "Marker already exists..." );
+				//Debug.Log( "Marker already exists..." );
 			}
 		}
 	}

@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EaseLook : MonoBehaviour {
 	private List<GameObject> _lookedAt;
+	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
 
 	// Use this for initialization
 	void Start() {
@@ -15,9 +16,7 @@ public class EaseLook : MonoBehaviour {
 	void Update() {
 		// This is not the best implementation. Can see through objects.
 		var hits = Physics.RaycastAll(
-			GetComponent<Camera>().ViewportPointToRay(
-				new Vector3( 0.5F, 0.5F, 0.5f )
-			)
+			GetComponent<Camera>().ViewportPointToRay( _forward )
 		);
 
 		foreach( var hit in hits ) {

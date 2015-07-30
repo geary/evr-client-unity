@@ -1,5 +1,6 @@
 //using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -31,42 +32,23 @@ public class EaseLook : MonoBehaviour {
 	void EnterMarker( GameObject marker ) {
 		var easeMarker = marker.GetComponent<EaseMarker>();
 		var runtimeId = marker.GetInstanceID();
-		var shouldAdd = true;
 
-		//Debug.Log( "Attempting to add marker with runtime ID: " + runtimeId );
-
-		foreach( var lookObject in _lookedAt ) {
-			if( lookObject.GetInstanceID() == runtimeId ) {
-				shouldAdd = false;
-				break;
-			}
-		}
-
-		if( shouldAdd ) {
+		if( _lookedAt.All(
+			lookObject => lookObject.GetInstanceID() != runtimeId
+		) ) {
 			Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
-
 			_lookedAt.Add( marker );
 			easeMarker.OnLookStart( easeMarker.MarkerName );
-		} else {
-			//Debug.Log( "Marker already exists..." );
 		}
 	}
 
 	// Exit any markers we are no longer looking at
 	void ExitOtherMarkers( RaycastHit[] hits ) {
-		var exitedObjects = new List<GameObject>();
-		foreach( var lookObject in _lookedAt ) {
-			var exit = true;
-			foreach( var hit in hits ) {
-				if( lookObject.GetInstanceID() == hit.transform.gameObject.GetInstanceID() ) {
-					exit = false;
-					break;
-				}
-			}
-			if( exit ) {
-				exitedObjects.Add( lookObject );
-			}
-		}
+		var exitedObjects = _lookedAt.Where(
+			lookObject => hits.All(
+				hit => lookObject.GetInstanceID() != hit.transform.gameObject.GetInstanceID()
+			)
+		).ToList();
 
 		foreach( var exitedObject in exitedObjects ) {
 			var exitedMarker = exitedObject.GetComponent<EaseMarker>();

@@ -15,75 +15,65 @@ public class EaseLook : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		// This is not the best implementation. Can see through objects.
-		var hits = Physics.RaycastAll(
-			GetComponent<Camera>().ViewportPointToRay( _forward )
-		);
+		var ray = GetComponent<Camera>().ViewportPointToRay( _forward );
+		var hits = Physics.RaycastAll( ray );
+
+		ExitOtherMarkers( hits );
 
 		foreach( var hit in hits ) {
 			if( hit.transform.gameObject.GetComponent<EaseMarker>() ) {
-				AddMarker( hit.transform.gameObject );
-			}
-		}
-
-		RemoveDeadMarkers( hits );
-	}
-
-	// Check for markers that should be removed
-	void RemoveDeadMarkers( RaycastHit[] hits ) {
-		var foundMatch = false;
-
-		var removableGameObjects = new List<GameObject>();
-
-		foreach( var lookObject in _lookedAt ) {
-			foreach( var hit in hits ) {
-				if( lookObject.GetInstanceID() == hit.transform.gameObject.GetInstanceID() ) {
-					foundMatch = true;
-					break;
-				}
-			}
-
-			if( ! foundMatch ) {
-				removableGameObjects.Add( lookObject );
-			}
-		}
-
-		foreach( var removeObject in removableGameObjects ) {
-			var removeMarker = removeObject.GetComponent<EaseMarker>();
-			if( removeMarker ) {
-				Debug.Log( "Removing marker with ID: " + removeObject.GetInstanceID() );
-
-				removeMarker.OnLookEnd( removeMarker.MarkerName );
-				_lookedAt.Remove( removeObject );
+				EnterMarker( hit.transform.gameObject );
 			}
 		}
 	}
 
 	// Add a marker if it is not already in the list
-	void AddMarker( GameObject marker ) {
+	void EnterMarker( GameObject marker ) {
 		var easeMarker = marker.GetComponent<EaseMarker>();
 		var runtimeId = marker.GetInstanceID();
 		var shouldAdd = true;
 
 		//Debug.Log( "Attempting to add marker with runtime ID: " + runtimeId );
 
-		if( _lookedAt.Count == 0 ) {
+		foreach( var lookObject in _lookedAt ) {
+			if( lookObject.GetInstanceID() == runtimeId ) {
+				shouldAdd = false;
+				break;
+			}
+		}
+
+		if( shouldAdd ) {
+			Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
+
 			_lookedAt.Add( marker );
 			easeMarker.OnLookStart( easeMarker.MarkerName );
 		} else {
-			foreach( var lookObject in _lookedAt ) {
-				if( lookObject.GetInstanceID() == runtimeId ) {
-					shouldAdd = false;
+			//Debug.Log( "Marker already exists..." );
+		}
+	}
+
+	// Exit any markers we are no longer looking at
+	void ExitOtherMarkers( RaycastHit[] hits ) {
+		var exitedObjects = new List<GameObject>();
+		foreach( var lookObject in _lookedAt ) {
+			var exit = true;
+			foreach( var hit in hits ) {
+				if( lookObject.GetInstanceID() == hit.transform.gameObject.GetInstanceID() ) {
+					exit = false;
 					break;
 				}
 			}
+			if( exit ) {
+				exitedObjects.Add( lookObject );
+			}
+		}
 
-			if( shouldAdd ) {
-				Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
-
-				_lookedAt.Add( marker );
-				easeMarker.OnLookStart( easeMarker.MarkerName );
-			} else {
-				//Debug.Log( "Marker already exists..." );
+		foreach( var exitedObject in exitedObjects ) {
+			var exitedMarker = exitedObject.GetComponent<EaseMarker>();
+			if( exitedMarker ) {
+				Debug.Log( "Removing marker with ID: " + exitedObject.GetInstanceID() );
+				exitedMarker.OnLookEnd( exitedMarker.MarkerName );
+				_lookedAt.Remove( exitedObject );
 			}
 		}
 	}

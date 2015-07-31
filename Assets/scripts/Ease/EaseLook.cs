@@ -5,6 +5,9 @@ using UnityEngine;
 
 
 public class EaseLook : MonoBehaviour {
+	// TODO: May want to make this a marker property?
+	public bool SingleMarker = true;
+
 	private List<GameObject> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
 
@@ -15,9 +18,16 @@ public class EaseLook : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		// This is not the best implementation. Can see through objects.
 		var ray = GetComponent<Camera>().ViewportPointToRay( _forward );
 		var hits = Physics.RaycastAll( ray );
+
+		if( SingleMarker  &&  hits.Count() > 0 ) {
+			hits = new[] {
+				hits.Aggregate(
+					( nearest, next ) => nearest.distance < next.distance ? nearest : next
+				)
+			};
+		}
 
 		ExitOtherMarkers( hits );
 

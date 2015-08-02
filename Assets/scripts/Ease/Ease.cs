@@ -28,12 +28,10 @@ public class Ease : MonoBehaviour {
 	}
 
 	private string TimeStampJson() {
-		// TODO: use JSON serializer
-		return
-			"{\"uuid\": \"" +
-			SystemInfo.deviceUniqueIdentifier +
-			"\", \"timestamp\": \"" +
-			System.DateTime.Now.ToString("yyyyMMddHHmmssffff") +
-			"\"}";
+		return string.Format(
+			@"{{""uuid"":""{0}"",""timestamp"":""{1}""}}",
+			SystemInfo.deviceUniqueIdentifier,
+			System.DateTime.Now.ToString("yyyyMMddHHmmssffff")
+		);
 	}
 }

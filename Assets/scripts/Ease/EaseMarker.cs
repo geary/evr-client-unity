@@ -55,13 +55,11 @@ public class EaseMarker : MonoBehaviour {
 	}
 
 	private string MarkerTimeStampJson() {
-		// TODO: use JSON serializer
-		return
-			"{\"uuid\": \"" +
-			SystemInfo.deviceUniqueIdentifier +
-			"\", \"timestamp\": \"" +
-			System.DateTime.Now.ToString("yyyyMMddHHmmssffff") +
-			"\", \"marker_name\": \"" +
-			name + "\"}";
+		return string.Format(
+			@"{{""uuid"":""{0}"",""timestamp"":""{1}"",""name"":""{2}""}}",
+			SystemInfo.deviceUniqueIdentifier,
+			System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+			name
+		);
 	}
 }

@@ -7,7 +7,7 @@ public class EaseEvent {
 	private const bool DEBUG = true;
 
 	public void Send( string type, string data ) {
-		Debug.Log( string.Format( "Sending Event {0}:\n{1}", type, data ) );
+		Debug.Log( string.Format( "Ease Analytics {0}:\n{1}", type, data ) );
 
 		var headers = new Dictionary< string, string > {
 			{ "Content-Type", "application/json" },

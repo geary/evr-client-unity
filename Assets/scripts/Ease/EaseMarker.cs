@@ -34,7 +34,7 @@ public class EaseMarker : MonoBehaviour {
 		if( _looking ) return;
 		_looking = true;
 
-		Debug.Log( "Ease Marker In <" + name + ">" );
+		//Debug.Log( "Ease Marker In <" + name + ">" );
 
 		var easeEvent = new EaseEvent();
 		easeEvent.Send( "marker_in", MarkerTimeStampJson() );
@@ -46,7 +46,7 @@ public class EaseMarker : MonoBehaviour {
 		if( ! _looking ) return;
 		_looking = false;
 
-		Debug.Log( "Ease Marker Out <" + name + ">" );
+		//Debug.Log( "Ease Marker Out <" + name + ">" );
 
 		var easeEvent = new EaseEvent();
 		easeEvent.Send( "marker_out", MarkerTimeStampJson() );

@@ -45,7 +45,7 @@ public class EaseLook : MonoBehaviour {
 		if( _lookedAt.All(
 			lookObject => lookObject.GetInstanceID() != runtimeId
 		) ) {
-			Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
+			//Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
 			_lookedAt.Add( marker );
 			easeMarker.OnLookStart( easeMarker.MarkerName );
 		}
@@ -62,7 +62,7 @@ public class EaseLook : MonoBehaviour {
 		foreach( var exitedObject in exitedObjects ) {
 			var exitedMarker = exitedObject.GetComponent<EaseMarker>();
 			if( exitedMarker ) {
-				Debug.Log( "Removing marker with ID: " + exitedObject.GetInstanceID() );
+				//Debug.Log( "Removing marker with ID: " + exitedObject.GetInstanceID() );
 				exitedMarker.OnLookEnd( exitedMarker.MarkerName );
 				_lookedAt.Remove( exitedObject );
 			}

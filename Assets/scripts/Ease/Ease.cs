@@ -2,12 +2,12 @@
 
 public class Ease : MonoBehaviour {
 	void Awake() {
-		Debug.Log( "Ease Analytics Initializing..." );
+		//Debug.Log( "Ease Analytics Initializing..." );
 	}
 
 	// Use this for initialization
 	void Start() {
-		Debug.Log( SystemInfo.systemMemorySize );
+		//Debug.Log( SystemInfo.systemMemorySize );
 
 		var easeEvent = new EaseEvent();
 		easeEvent.Send( "session_start", TimeStampJson() );
@@ -21,7 +21,7 @@ public class Ease : MonoBehaviour {
 	}
 
 	void OnApplicationQuit() {
-		Debug.Log( "Session has ended..." );
+		//Debug.Log( "Ease Analytics exiting..." );
 
 		var easeEvent = new EaseEvent();
 		easeEvent.Send( "session_end", TimeStampJson() );

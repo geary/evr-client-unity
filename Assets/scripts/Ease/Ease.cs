@@ -1,8 +1,4 @@
-﻿//using System;
-//using System.Collections;
-//using System.IO;
-//using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Ease : MonoBehaviour {
 	void Awake() {

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
 public class Ease : MonoBehaviour {
+
+	public bool LogEvents = true;
+
 	void Awake() {
 		//Debug.Log( "Ease Analytics Initializing..." );
 	}

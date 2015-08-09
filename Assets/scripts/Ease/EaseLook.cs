@@ -1,14 +1,19 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using UnityEditor;
 using UnityEngine;
 
 
 public class EaseLook : MonoBehaviour {
+
 	// TODO: May want to make this a marker property?
 	public bool SingleMarker = true;
 
 	private List<GameObject> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
+
+	private string _log;
 
 	// Use this for initialization
 	void Start() {
@@ -21,11 +26,26 @@ public class EaseLook : MonoBehaviour {
 		var hits = Physics.RaycastAll( ray );
 
 		if( SingleMarker  &&  hits.Count() > 0 ) {
+#if false
 			hits = new[] {
 				hits.Aggregate(
 					( nearest, next ) => nearest.distance < next.distance ? nearest : next
 				)
 			};
+#else
+			var log = "";
+			var near = hits[0];
+			foreach( var hit in hits ) {
+				log += hit.transform.name + ": " + hit.distance + "   ";
+				if( hit.distance < near.distance )
+					near = hit;
+			}
+			if( log != _log ) {
+				_log = log;
+				Debug.Log( log );
+			}
+			hits = new RaycastHit[] { near };
+#endif
 		}
 
 		ExitOtherMarkers( hits );

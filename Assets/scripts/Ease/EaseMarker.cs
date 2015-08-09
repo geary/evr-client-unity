@@ -4,6 +4,7 @@
 [RequireComponent( typeof(Collider) )]
 
 public class EaseMarker : MonoBehaviour {
+
 	//private bool _debug;
 
 	public string MarkerName;
@@ -36,8 +37,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker In <" + name + ">" );
 
-		var easeEvent = new EaseEvent();
-		easeEvent.Send( "marker_in", MarkerTimeStampJson() );
+		EaseEvent.Send( "marker_in", MarkerTimeStampJson() );
 
 		GetComponent<Renderer>().material.color = Color.red;
 	}
@@ -48,8 +48,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker Out <" + name + ">" );
 
-		var easeEvent = new EaseEvent();
-		easeEvent.Send( "marker_out", MarkerTimeStampJson() );
+		EaseEvent.Send( "marker_out", MarkerTimeStampJson() );
 
 		GetComponent<Renderer>().material.color = Color.gray;
 	}

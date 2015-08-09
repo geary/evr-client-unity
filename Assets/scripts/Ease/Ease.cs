@@ -9,8 +9,7 @@ public class Ease : MonoBehaviour {
 	void Start() {
 		//Debug.Log( SystemInfo.systemMemorySize );
 
-		var easeEvent = new EaseEvent();
-		easeEvent.Send( "session_start", TimeStampJson() );
+		EaseEvent.Send( "session_start", TimeStampJson() );
 	}
 
 	// Update is called once per frame
@@ -23,8 +22,7 @@ public class Ease : MonoBehaviour {
 	void OnApplicationQuit() {
 		//Debug.Log( "Ease Analytics exiting..." );
 
-		var easeEvent = new EaseEvent();
-		easeEvent.Send( "session_end", TimeStampJson() );
+		EaseEvent.Send( "session_end", TimeStampJson() );
 	}
 
 	private string TimeStampJson() {

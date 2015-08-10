@@ -81,7 +81,7 @@ public class EaseEvent {
 		};
 
 		var url = string.Format(
-			"{0}{1}.json{2}",
+			"{0}unity/{1}.json{2}",
 			_firebaseUrl,
 			path,
 			"?print=silent"

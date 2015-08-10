@@ -10,14 +10,14 @@ public class EaseLook : MonoBehaviour {
 	// TODO: May want to make this a marker property?
 	public bool SingleMarker = true;
 
-	private List<GameObject> _lookedAt;
+	private List<RaycastHit> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
 
 	private string _log;
 
 	// Use this for initialization
 	void Start() {
-		_lookedAt = new List<GameObject>();
+		_lookedAt = new List<RaycastHit>();
 	}
 
 	// Update is called once per frame
@@ -52,39 +52,42 @@ public class EaseLook : MonoBehaviour {
 
 		foreach( var hit in hits ) {
 			if( hit.transform.gameObject.GetComponent<EaseMarker>() ) {
-				EnterMarker( hit.transform.gameObject );
+				EnterMarker( hit );
 			}
 		}
 	}
 
 	// Add a marker if it is not already in the list
-	void EnterMarker( GameObject marker ) {
+	void EnterMarker( RaycastHit hit ) {
+		var marker = hit.transform.gameObject;
 		var easeMarker = marker.GetComponent<EaseMarker>();
 		var runtimeId = marker.GetInstanceID();
 
 		if( _lookedAt.All(
-			lookObject => lookObject.GetInstanceID() != runtimeId
+			lookHit => lookHit.transform.gameObject.GetInstanceID() != runtimeId
 		) ) {
 			//Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
-			_lookedAt.Add( marker );
-			easeMarker.OnLookStart( easeMarker.MarkerName );
+			_lookedAt.Add( hit );
+			easeMarker.OnLookStart( hit, easeMarker.MarkerName );
 		}
 	}
 
 	// Exit any markers we are no longer looking at
 	void ExitOtherMarkers( RaycastHit[] hits ) {
-		var exitedObjects = _lookedAt.Where(
-			lookObject => hits.All(
-				hit => lookObject.GetInstanceID() != hit.transform.gameObject.GetInstanceID()
+		var exitedHits = _lookedAt.Where(
+			lookHit => hits.All(
+				hit =>
+					lookHit.transform.gameObject.GetInstanceID() !=
+					hit.transform.gameObject.GetInstanceID()
 			)
 		).ToList();
 
-		foreach( var exitedObject in exitedObjects ) {
-			var exitedMarker = exitedObject.GetComponent<EaseMarker>();
+		foreach( var exitedHit in exitedHits ) {
+			var exitedMarker = exitedHit.transform.gameObject.GetComponent<EaseMarker>();
 			if( exitedMarker ) {
 				//Debug.Log( "Removing marker with ID: " + exitedObject.GetInstanceID() );
-				exitedMarker.OnLookEnd( exitedMarker.MarkerName );
-				_lookedAt.Remove( exitedObject );
+				exitedMarker.OnLookEnd( exitedHit, exitedMarker.MarkerName );
+				_lookedAt.Remove( exitedHit );
 			}
 		}
 	}

@@ -22,13 +22,13 @@ public class EaseMarker : MonoBehaviour {
 		if( MarkerName.Length == 0 ) {
 			MarkerName = GetInstanceID().ToString();
 		}
-		EaseEvent.SendEvent( MarkerTimeStampJson("add_marker") );
+		EaseEvent.SendEvent( MarkerTimeStampJson( "add_marker", -1 ) );
 	}
 
 	void Update() {
 	}
 
-	public void OnLookStart( string name ) {
+	public void OnLookStart( RaycastHit hit, string name ) {
 		//Dictionary< string, string > eventData;
 
 		if( _looking ) return;
@@ -36,29 +36,30 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker In <" + name + ">" );
 
-		EaseEvent.SendEvent( MarkerTimeStampJson("marker_in") );
+		EaseEvent.SendEvent( MarkerTimeStampJson( "marker_in", hit.distance ) );
 
 		GetComponent<Renderer>().material.color = Color.red;
 	}
 
-	public void OnLookEnd( string name ) {
+	public void OnLookEnd( RaycastHit hit, string name ) {
 		if( ! _looking ) return;
 		_looking = false;
 
 		//Debug.Log( "Ease Marker Out <" + name + ">" );
 
-		EaseEvent.SendEvent( MarkerTimeStampJson("marker_out") );
+		EaseEvent.SendEvent( MarkerTimeStampJson( "marker_out", hit.distance ) );
 
 		GetComponent<Renderer>().material.color = Color.gray;
 	}
 
-	private string MarkerTimeStampJson( string eventName ) {
+	private string MarkerTimeStampJson( string eventName, float distance ) {
 		return string.Format(
-			@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}"",""name"":""{3}""}}",
+			@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}"",""name"":""{3}"",""distance"":{4}}}",
 			eventName,
 			SystemInfo.deviceUniqueIdentifier,
 			System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-			name
+			name,
+			distance
 		);
 	}
 }

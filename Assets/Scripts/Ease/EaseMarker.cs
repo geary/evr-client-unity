@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 
 [RequireComponent( typeof(Collider) )]
@@ -18,14 +18,13 @@ public class EaseMarker : MonoBehaviour {
 
 	private bool _looking;
 
-	// Use this for initialization
 	void Start() {
 		if( MarkerName.Length == 0 ) {
 			MarkerName = GetInstanceID().ToString();
 		}
+		EaseEvent.SendEvent( MarkerTimeStampJson("add_marker") );
 	}
 
-	// Update is called once per frame
 	void Update() {
 	}
 
@@ -37,7 +36,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker In <" + name + ">" );
 
-		EaseEvent.Send( "marker_in", MarkerTimeStampJson() );
+		EaseEvent.SendEvent( MarkerTimeStampJson("marker_in") );
 
 		GetComponent<Renderer>().material.color = Color.red;
 	}
@@ -48,14 +47,15 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker Out <" + name + ">" );
 
-		EaseEvent.Send( "marker_out", MarkerTimeStampJson() );
+		EaseEvent.SendEvent( MarkerTimeStampJson("marker_out") );
 
 		GetComponent<Renderer>().material.color = Color.gray;
 	}
 
-	private string MarkerTimeStampJson() {
+	private string MarkerTimeStampJson( string eventName ) {
 		return string.Format(
-			@"{{""uuid"":""{0}"",""timestamp"":""{1}"",""name"":""{2}""}}",
+			@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}"",""name"":""{3}""}}",
+			eventName,
 			SystemInfo.deviceUniqueIdentifier,
 			System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
 			name

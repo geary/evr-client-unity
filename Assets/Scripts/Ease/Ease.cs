@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
+using UnityEngine;
 
 public class Ease : MonoBehaviour {
 
@@ -6,16 +10,15 @@ public class Ease : MonoBehaviour {
 
 	void Awake() {
 		//Debug.Log( "Ease Analytics Initializing..." );
+		EaseEvent.SessionID =
+			System.DateTime.Now.ToString( "yyyyMMddHHmmssffff" );
 	}
 
-	// Use this for initialization
 	void Start() {
 		//Debug.Log( SystemInfo.systemMemorySize );
-
-		EaseEvent.Send( "session_start", TimeStampJson() );
+		EaseEvent.SessionBegin();
 	}
 
-	// Update is called once per frame
 	void Update() {
 	}
 
@@ -24,13 +27,13 @@ public class Ease : MonoBehaviour {
 
 	void OnApplicationQuit() {
 		//Debug.Log( "Ease Analytics exiting..." );
-
-		EaseEvent.Send( "session_end", TimeStampJson() );
+		EaseEvent.SessionEnd();
 	}
 
-	private string TimeStampJson() {
+	public static string TimeStampJson( string eventName ) {
 		return string.Format(
-			@"{{""uuid"":""{0}"",""timestamp"":""{1}""}}",
+			@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}""}}",
+			eventName,
 			SystemInfo.deviceUniqueIdentifier,
 			System.DateTime.Now.ToString("yyyyMMddHHmmssffff")
 		);

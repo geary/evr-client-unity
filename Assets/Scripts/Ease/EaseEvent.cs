@@ -1,27 +1,64 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 
-public class EaseEvent {
+public class EaseEvent : MonoBehaviour {
 
-	private const bool DEBUG = true;
+	private static bool _debug = true;
+	private static string _firebaseUrl = _debug ?
+		"https://resplendent-fire-8993.firebaseio.com/" :
+		"";
 
-	public static void Send( string type, string data ) {
-		Debug.Log( string.Format( "Ease Analytics {0}:\n{1}", type, data ) );
+	public static string SessionID;
 
-		var headers = new Dictionary< string, string > {
-			{ "Content-Type", "application/json" },
-			{ "event_type", type },
-			{ "event_data", data }
+	public static void SessionBegin() {
+		var json = Ease.TimeStampJson("session_begin");
+		FirebaseSend( "POST", "sessions", json );
+		SendEvent( json );
+	}
+
+	public static void SessionEnd() {
+		var json = Ease.TimeStampJson("session_end");
+		SendEvent( json );
+	}
+
+	public static void SendEvent( string json ) {
+		if( SessionID == "" ) {
+			Debug.LogError( "SendEvent with no SessionID" );
+			return;
+		}
+
+		Debug.Log( "POST/" + SessionID + ": " + json );
+		FirebaseSend( "POST", "events/" + SessionID, json );
+	}
+
+	private static void FirebaseSend(
+		string method,
+		string path,
+		string json
+	) {
+		var headers = new Dictionary<string, string> {
+			{ "X-HTTP-Method-Override", method }
 		};
 
-		var postData = "_";
-		var bytes = Encoding.ASCII.GetBytes( postData.ToCharArray() );
+		var url = string.Format(
+			"{0}{1}.json{2}",
+			_firebaseUrl,
+			path,
+			"?print=silent"
+		);
 
-		var url =  DEBUG ?
-			"http://127.0.0.1:8080/api/v1/record_event" :
-			"http://ease-solarvr.rhcloud.com/api/v1/record_event";
-		var www = new WWW( url, bytes, headers );
+		Send( url, headers, json );
+	}
+
+	private static void Send(
+		string url,
+		Dictionary< string, string > headers,
+		string data
+	) {
+		var www = new WWW( url, Encoding.UTF8.GetBytes(data), headers );
 	}
 }

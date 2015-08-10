@@ -321,7 +321,7 @@ GameObject:
   - 4: {fileID: 1180875975}
   - 114: {fileID: 1180875974}
   m_Layer: 0
-  m_Name: ease
+  m_Name: EaseVR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

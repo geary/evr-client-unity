@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 
-public class EaseEvent : MonoBehaviour {
+public class EaseEvent {
 
 	private static bool _debug = true;
 	private static string _firebaseUrl = _debug ?

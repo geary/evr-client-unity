@@ -8,10 +8,13 @@ using UnityEngine;
 public class EaseLook : MonoBehaviour {
 
 	// TODO: May want to make this a marker property?
-	public bool SingleMarker = true;
+	public float UpdateInterval = 0.1f;
+	public bool SeeThrough = false;
 
 	private List<RaycastHit> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
+
+	private float _lastUpdateTime = 0;
 
 	private string _log;
 
@@ -22,10 +25,22 @@ public class EaseLook : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		UpdatePosition();
+		UpdateMarkers();
+	}
+
+	private void UpdatePosition() {
+		var time = Time.time;
+		if( time - _lastUpdateTime < UpdateInterval ) return;
+		_lastUpdateTime = time;
+		EaseEvent.Position( transform );
+	}
+
+	void UpdateMarkers() {
 		var ray = GetComponent<Camera>().ViewportPointToRay( _forward );
 		var hits = Physics.RaycastAll( ray );
 
-		if( SingleMarker  &&  hits.Count() > 0 ) {
+		if( ! SeeThrough  &&  hits.Count() > 0 ) {
 #if false
 			hits = new[] {
 				hits.Aggregate(

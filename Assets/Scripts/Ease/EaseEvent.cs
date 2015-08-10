@@ -7,12 +7,18 @@ using UnityEngine;
 
 public class EaseEvent {
 
+	public static string SessionID;
+
 	private static bool _debug = true;
 	private static string _firebaseUrl = _debug ?
 		"https://resplendent-fire-8993.firebaseio.com/" :
 		"";
-
-	public static string SessionID;
+	private static float _posX;
+	private static float _posY;
+	private static float _posZ;
+	private static float _rotX;
+	private static float _rotY;
+	private static float _rotZ;
 
 	public static void SessionBegin() {
 		var json = Ease.TimeStampJson("session_begin");
@@ -22,6 +28,36 @@ public class EaseEvent {
 
 	public static void SessionEnd() {
 		var json = Ease.TimeStampJson("session_end");
+		SendEvent( json );
+	}
+
+	public static void Position( Transform transform ) {
+		// TODO: This is terrible code! Isn't there an efficient library function for this?
+		var posX = transform.position.x;
+		var posY = transform.position.y;
+		var posZ = transform.position.z;
+		var rotX = transform.eulerAngles.x;
+		var rotY = transform.eulerAngles.y;
+		var rotZ = transform.eulerAngles.z;
+
+		if(
+			posX == _posX  &&
+			posY == _posY  &&
+			posZ == _posZ  &&
+			rotX == _rotX  &&
+			rotY == _rotY  &&
+			rotZ == _rotZ
+		) {
+			return;
+		}
+		_posX = posX;
+		_posY = posY;
+		_posZ = posZ;
+		_rotX = rotX;
+		_rotY = rotY;
+		_rotZ = rotZ;
+
+		var json = PositionJson( posX, posY, posZ, rotX, rotY, rotZ );
 		SendEvent( json );
 	}
 
@@ -60,5 +96,18 @@ public class EaseEvent {
 		string data
 	) {
 		var www = new WWW( url, Encoding.UTF8.GetBytes(data), headers );
+	}
+
+	public static string PositionJson(
+		float posX, float posY, float posZ,
+		float rotX, float rotY, float rotZ
+	) {
+		return string.Format(
+			@"{{""event"":""position"",""uuid"":""{0}"",""timestamp"":""{1}"",""posX"":{2},""posY"":{3},""posZ"":{4},""rotX"":{5},""rotY"":{6},""rotZ"":{7} }}",
+			SystemInfo.deviceUniqueIdentifier,
+			System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+			posX, posY, posZ,
+			rotX, rotY, rotZ
+		);
 	}
 }

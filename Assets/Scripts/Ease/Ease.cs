@@ -22,9 +22,6 @@ public class Ease : MonoBehaviour {
 	void Update() {
 	}
 
-	void SentUpdate() {
-	}
-
 	void OnApplicationQuit() {
 		//Debug.Log( "Ease Analytics exiting..." );
 		EaseEvent.SessionEnd();

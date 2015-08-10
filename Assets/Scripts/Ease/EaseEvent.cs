@@ -12,7 +12,7 @@ public class EaseEvent {
 	private static bool _debug = true;
 	private static string _firebaseUrl = _debug ?
 		"https://resplendent-fire-8993.firebaseio.com/" :
-		"";
+		"https://incandescent-inferno-587.firebaseio.com/";
 	private static float _posX;
 	private static float _posY;
 	private static float _posZ;

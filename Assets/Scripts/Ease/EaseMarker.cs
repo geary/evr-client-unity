@@ -22,7 +22,7 @@ public class EaseMarker : MonoBehaviour {
 		if( MarkerName.Length == 0 ) {
 			MarkerName = GetInstanceID().ToString();
 		}
-		EaseEvent.SendEvent( MarkerTimeStampJson( "add_marker", -1 ) );
+		//EaseEvent.SendEvent( MarkerTimeStampJson( "add_marker", -1 ) );
 	}
 
 	void Update() {
@@ -36,7 +36,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker In <" + name + ">" );
 
-		EaseEvent.SendEvent( MarkerTimeStampJson( "marker_in", hit.distance ) );
+		//EaseEvent.SendEvent( MarkerTimeStampJson( "marker_in", hit.distance ) );
 
 		GetComponent<Renderer>().material.color = Color.red;
 	}
@@ -47,7 +47,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker Out <" + name + ">" );
 
-		EaseEvent.SendEvent( MarkerTimeStampJson( "marker_out", hit.distance ) );
+		//EaseEvent.SendEvent( MarkerTimeStampJson( "marker_out", hit.distance ) );
 
 		GetComponent<Renderer>().material.color = Color.gray;
 	}

@@ -11,8 +11,8 @@ public class EaseEvent {
 
 	private static bool _debug = true;
 	private static string _apiUrl = _debug ?
-		"http://mikebook:8080/v1/client/" :
-		"http://api.easevr.com/v1/client/";
+		"http://mikebook:8080/v1" :
+		"http://api.easevr.com/v1";
 	private static float _posX;
 	private static float _posY;
 	private static float _posZ;
@@ -39,10 +39,7 @@ public class EaseEvent {
 		ApiPost( "session_start", form );
 #else
 		ApiPost( "session_start", string.Format(
-			@"api_key={0}&sid={1}&ts={2}&udid={3}&hmd={4}&ver={5}&os={6}&os_ver={7}&mem={8}&proc={9}",
-			"mike_TODO",
-			SessionID,
-			TimeStamp(),
+			@"udid={0}&hmd={1}&ver={2}&os={3}&os_ver={4}&mem={5}&proc={6}",
 			SystemInfo.deviceUniqueIdentifier,
 			"TODO",
 			"TODO",
@@ -55,8 +52,8 @@ public class EaseEvent {
 	}
 
 	public static void SessionEnd() {
-		//var json = Ease.TimeStampJson("session_end");
-		//SendEvent( json );
+		ApiPost( "session_end", "" );
+		System.Threading.Thread.Sleep( 1000 );  // TODO: TEMP HACK
 	}
 
 	public static void Position( Transform transform ) {
@@ -117,9 +114,25 @@ public class EaseEvent {
 		string endpoint,
 		string parameters
 	) {
-		var url = _apiUrl + "GUID_TODO" + "/" + endpoint;
+		var postData = string.Format(
+			@"api_key={0}&sid={1}&ts={2}",
+			"mike_TODO",
+			SessionID,
+			TimeStamp()
+		);
+
+		if( parameters != "" ) {
+			postData += "&" + parameters;
+		}
+
+		var url = string.Format(
+			@"{0}/client/{1}/{2}",
+			_apiUrl,
+			"GUID_TODO",
+			endpoint
+		);
 		
-		var www = new WWW( url, Encoding.UTF8.GetBytes(parameters) );
+		var www = new WWW( url, Encoding.UTF8.GetBytes(postData) );
 		//StartCoroutine
 		//yield return www;
 		//var text = www.text;

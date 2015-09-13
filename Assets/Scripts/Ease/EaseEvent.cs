@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using UnityEngine;
 
@@ -54,6 +55,14 @@ public class EaseEvent {
 	public static void SessionEnd() {
 		ApiPost( "session_end", "" );
 		System.Threading.Thread.Sleep( 1000 );  // TODO: TEMP HACK
+	}
+
+	public static void MarkerRegister( bool register, string name, Transform transform ) {
+		ApiPost( register ? "marker_register" : "marker_deregister", string.Format(
+			@"name={0}&pos={1}",
+			name,
+			GetTransformXYZ( transform )
+		));
 	}
 
 	public static void Position( Transform transform ) {
@@ -165,8 +174,17 @@ public class EaseEvent {
 	//}
 
 	private static string TimeStamp() {
-		return Math.Truncate(
-			DateTime.UtcNow.Subtract(JavaScriptEpoch).TotalMilliseconds
-		).ToString();
+		return DateTime.UtcNow
+			.Subtract(JavaScriptEpoch).TotalMilliseconds
+			.ToString( "F0", CultureInfo.InvariantCulture );
+	}
+
+	private static string GetTransformXYZ( Transform transform ) {
+		return string.Format(
+			@"{{""x"":{0},""y"":{0},""z"":{0}}}",
+			transform.position.x,
+			transform.position.y,
+			transform.position.z
+		);
 	}
 }

@@ -22,7 +22,7 @@ public class EaseMarker : MonoBehaviour {
 		if( MarkerName.Length == 0 ) {
 			MarkerName = GetInstanceID().ToString();
 		}
-		//EaseEvent.SendEvent( MarkerTimeStampJson( "add_marker", -1 ) );
+		EaseEvent.MarkerRegister( true, MarkerName, transform );
 	}
 
 	void Update() {

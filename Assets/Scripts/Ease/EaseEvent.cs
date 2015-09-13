@@ -61,7 +61,7 @@ public class EaseEvent {
 		ApiPost( register ? "marker_register" : "marker_deregister", string.Format(
 			@"name={0}&pos={1}",
 			name,
-			GetTransformXYZ( transform )
+			GetXYZ( transform.position )
 		));
 	}
 
@@ -70,38 +70,43 @@ public class EaseEvent {
 		ApiPost( enter ? "marker_enter" : "marker_exit", string.Format(
 			@"name={0}&pos={1}",
 			name,
-			GetTransformXYZ( transform )
+			GetXYZ( transform.position )
 		));
 	}
 
-	public static void Position( Transform transform ) {
-		//// TODO: This is terrible code! Isn't there an efficient library function for this?
-		//var posX = transform.position.x;
-		//var posY = transform.position.y;
-		//var posZ = transform.position.z;
-		//var rotX = transform.eulerAngles.x;
-		//var rotY = transform.eulerAngles.y;
-		//var rotZ = transform.eulerAngles.z;
+	public static void Presence( Transform transform ) {
+		// TODO: This is terrible code! Isn't there an efficient library function for this?
+		var posX = transform.position.x;
+		var posY = transform.position.y;
+		var posZ = transform.position.z;
+		var rotX = transform.eulerAngles.x;
+		var rotY = transform.eulerAngles.y;
+		var rotZ = transform.eulerAngles.z;
 
-		//if(
-		//	posX == _posX  &&
-		//	posY == _posY  &&
-		//	posZ == _posZ  &&
-		//	rotX == _rotX  &&
-		//	rotY == _rotY  &&
-		//	rotZ == _rotZ
-		//) {
-		//	return;
-		//}
-		//_posX = posX;
-		//_posY = posY;
-		//_posZ = posZ;
-		//_rotX = rotX;
-		//_rotY = rotY;
-		//_rotZ = rotZ;
+		if(
+			posX == _posX &&
+			posY == _posY &&
+			posZ == _posZ &&
+			rotX == _rotX &&
+			rotY == _rotY &&
+			rotZ == _rotZ
+		) {
+			return;
+		}
+		_posX = posX;
+		_posY = posY;
+		_posZ = posZ;
+		_rotX = rotX;
+		_rotY = rotY;
+		_rotZ = rotZ;
 
-		//var json = PositionJson( posX, posY, posZ, rotX, rotY, rotZ );
-		//SendEvent( json );
+		ApiPost( "presence", string.Format(
+			@"pos={0}&rot={1}&fps={2}&m_use={3}",
+			GetXYZ( transform.position ),
+			GetXYZ( transform.eulerAngles ),
+			0,  // TODO
+			0  // TODO
+		));
 	}
 
 	//public static void SendEvent( string json ) {
@@ -188,12 +193,12 @@ public class EaseEvent {
 			.ToString( "F0", CultureInfo.InvariantCulture );
 	}
 
-	private static string GetTransformXYZ( Transform transform ) {
+	private static string GetXYZ( Vector3 vec ) {
 		return string.Format(
 			@"{{""x"":{0},""y"":{0},""z"":{0}}}",
-			transform.position.x,
-			transform.position.y,
-			transform.position.z
+			vec.x,
+			vec.y,
+			vec.z
 		);
 	}
 }

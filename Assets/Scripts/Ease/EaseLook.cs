@@ -7,9 +7,8 @@ using UnityEngine;
 
 public class EaseLook : MonoBehaviour {
 
-	// TODO: May want to make this a marker property?
 	public float UpdateInterval = 0.1f;
-	public bool SeeThrough = false;
+	public bool SeeThrough = false;  // TODO: Make this a marker property?
 
 	private List<RaycastHit> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
@@ -18,22 +17,20 @@ public class EaseLook : MonoBehaviour {
 
 	private string _log;
 
-	// Use this for initialization
 	void Start() {
 		_lookedAt = new List<RaycastHit>();
 	}
 
-	// Update is called once per frame
 	void Update() {
-		UpdatePosition();
+		UpdatePresence();
 		UpdateMarkers();
 	}
 
-	private void UpdatePosition() {
+	private void UpdatePresence() {
 		var time = Time.time;
 		if( time - _lastUpdateTime < UpdateInterval ) return;
 		_lastUpdateTime = time;
-		EaseEvent.Position( transform );
+		EaseEvent.Presence( transform );
 	}
 
 	void UpdateMarkers() {

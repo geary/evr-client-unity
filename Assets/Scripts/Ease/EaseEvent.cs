@@ -65,6 +65,15 @@ public class EaseEvent {
 		));
 	}
 
+	// TODO: This is basically the same as MarkerRegister right now, but may change
+	public static void MarkerEnter( bool enter, string name, Transform transform ) {
+		ApiPost( enter ? "marker_enter" : "marker_exit", string.Format(
+			@"name={0}&pos={1}",
+			name,
+			GetTransformXYZ( transform )
+		));
+	}
+
 	public static void Position( Transform transform ) {
 		//// TODO: This is terrible code! Isn't there an efficient library function for this?
 		//var posX = transform.position.x;

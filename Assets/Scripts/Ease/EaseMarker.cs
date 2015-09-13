@@ -36,7 +36,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker In <" + name + ">" );
 
-		//EaseEvent.SendEvent( MarkerTimeStampJson( "marker_in", hit.distance ) );
+		EaseEvent.MarkerEnter( true, MarkerName, transform );
 
 		GetComponent<Renderer>().material.color = Color.red;
 	}
@@ -47,7 +47,7 @@ public class EaseMarker : MonoBehaviour {
 
 		//Debug.Log( "Ease Marker Out <" + name + ">" );
 
-		//EaseEvent.SendEvent( MarkerTimeStampJson( "marker_out", hit.distance ) );
+		EaseEvent.MarkerEnter( false, MarkerName, transform );
 
 		GetComponent<Renderer>().material.color = Color.gray;
 	}

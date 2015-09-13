@@ -30,11 +30,13 @@ public class EaseLook : MonoBehaviour {
 		var time = Time.time;
 		if( time - _lastUpdateTime < UpdateInterval ) return;
 		_lastUpdateTime = time;
+		if( ! transform.hasChanged ) return;
+		transform.hasChanged = false;
 		EaseEvent.Presence( transform );
 	}
 
 	void UpdateMarkers() {
-		var ray = GetComponent<Camera>().ViewportPointToRay( _forward );
+		var ray = GetComponentInParent<Camera>().ViewportPointToRay( _forward );
 		var hits = Physics.RaycastAll( ray );
 
 		if( ! SeeThrough  &&  hits.Count() > 0 ) {

@@ -14,12 +14,6 @@ public class EaseEvent {
 	private static string _apiUrl = _debug ?
 		"http://mikebook:8080/v1" :
 		"http://api.easevr.com/v1";
-	private static float _posX;
-	private static float _posY;
-	private static float _posZ;
-	private static float _rotX;
-	private static float _rotY;
-	private static float _rotZ;
 
 	private static readonly DateTime JavaScriptEpoch =
 		new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
@@ -75,31 +69,6 @@ public class EaseEvent {
 	}
 
 	public static void Presence( Transform transform ) {
-		// TODO: This is terrible code! Isn't there an efficient library function for this?
-		var posX = transform.position.x;
-		var posY = transform.position.y;
-		var posZ = transform.position.z;
-		var rotX = transform.eulerAngles.x;
-		var rotY = transform.eulerAngles.y;
-		var rotZ = transform.eulerAngles.z;
-
-		if(
-			posX == _posX &&
-			posY == _posY &&
-			posZ == _posZ &&
-			rotX == _rotX &&
-			rotY == _rotY &&
-			rotZ == _rotZ
-		) {
-			return;
-		}
-		_posX = posX;
-		_posY = posY;
-		_posZ = posZ;
-		_rotX = rotX;
-		_rotY = rotY;
-		_rotZ = rotZ;
-
 		ApiPost( "presence", string.Format(
 			@"pos={0}&rot={1}&fps={2}&m_use={3}",
 			GetXYZ( transform.position ),

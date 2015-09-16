@@ -7,8 +7,7 @@ public class Ease : MonoBehaviour {
 	void Awake() {
 		//Debug.Log( "Ease Analytics Initializing..." );
 		LogSystemInfo();
-		EaseEvent.SessionID =
-			System.DateTime.Now.ToString( "yyyyMMddHHmmssffff" );
+		EaseEvent.SessionID = PushID.Generate();
 	}
 
 	void Start() {

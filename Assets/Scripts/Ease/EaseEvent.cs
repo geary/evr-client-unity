@@ -18,31 +18,22 @@ public class EaseEvent {
 		new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
 	public static void SessionBegin() {
-#if false
-		var form = new WWWForm();
-		form.AddField( "api_key", "TODO" );
-		form.AddField( "sid", SessionID );
-		form.AddField( "ts", System.DateTime.Now.ToString("yyyyMMddHHmmssffff") );
-		form.AddField( "udid", SystemInfo.deviceUniqueIdentifier );
-		form.AddField( "hmd", "TODO" );
-		form.AddField( "ver", "TODO" );
-		form.AddField( "os", "TODO" );
-		form.AddField( "os_ver", "TODO" );
-		form.AddField( "mem", 99999 );
-		form.AddField( "proc", "TODO" );
-		ApiPost( "session_start", form );
-#else
-		ApiPost( "session_start", string.Format(
-			@"udid={0}&hmd={1}&ver={2}&os={3}&os_ver={4}&mem={5}&proc={6}",
-			SystemInfo.deviceUniqueIdentifier,
-			"TODO",
-			"TODO",
-			"TODO",
-			"TODO",
-			"9999",
-			"TODO"
-		));
-#endif
+		ApiPost( "session_start",
+			"udid=" + WWW.EscapeURL( SystemInfo.deviceUniqueIdentifier ) +
+			"&hmd=" + "TODO" +
+			"&ver=" + "TODO" +
+			"&os=" + WWW.EscapeURL( SystemInfo.operatingSystem ) +
+			"&cpu=" + WWW.EscapeURL( SystemInfo.processorType ) +
+			"&cores=" + SystemInfo.processorCount +
+			"&sys_mem=" + SystemInfo.systemMemorySize +
+			"&gpu=" + WWW.EscapeURL( SystemInfo.graphicsDeviceName ) +
+			"&gpu_mem=" + SystemInfo.graphicsMemorySize +
+			"&gpu_driver=" + WWW.EscapeURL( SystemInfo.graphicsDeviceVersion ) +
+			// Deprecated
+			"&os_ver=" + "DEPRECATED" +
+			"&mem=" + 0 +
+			"&proc=" + "DEPRECATED"
+		);
 	}
 
 	public static void SessionEnd() {
@@ -51,30 +42,27 @@ public class EaseEvent {
 	}
 
 	public static void MarkerRegister( bool register, string name, Transform transform ) {
-		ApiPost( register ? "marker_register" : "marker_deregister", string.Format(
-			@"name={0}&pos={1}",
-			name,
-			GetXYZ( transform.position )
-		));
+		ApiPost( register ? "marker_register" : "marker_deregister",
+			"name=" + WWW.EscapeURL(name) +
+			"&pos=" + GetXYZ( transform.position )
+		);
 	}
 
 	// TODO: This is basically the same as MarkerRegister right now, but may change
 	public static void MarkerEnter( bool enter, string name, Transform transform ) {
-		ApiPost( enter ? "marker_enter" : "marker_exit", string.Format(
-			@"name={0}&pos={1}",
-			name,
-			GetXYZ( transform.position )
-		));
+		ApiPost( enter ? "marker_enter" : "marker_exit",
+			"name=" + WWW.EscapeURL(name) +
+			"&pos=" + GetXYZ( transform.position )
+		);
 	}
 
 	public static void Presence( Transform transform ) {
-		ApiPost( "presence", string.Format(
-			@"pos={0}&rot={1}&fps={2}&m_use={3}",
-			GetXYZ( transform.position ),
-			GetXYZ( transform.eulerAngles ),
-			0,  // TODO
-			0  // TODO
-		));
+		ApiPost( "presence",
+			"pos=" + GetXYZ( transform.position ) +
+			"&rot=" + GetXYZ( transform.eulerAngles ) +
+			"&fps=" + 0 +  // TODO
+			"&m_use=" + 0  // TODO
+		);
 	}
 
 	//public static void SendEvent( string json ) {

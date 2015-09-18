@@ -33,7 +33,6 @@ public class EaseEvent {
 			SystemInfo.graphicsMemorySize.ToString(),
 			DeTab( SystemInfo.graphicsDeviceVersion )
 		);
-		PostEvents();  // TEMP
 	}
 
 	public static void SessionEnd() {
@@ -83,7 +82,7 @@ public class EaseEvent {
 		));
 	}
 
-	private static void PostEvents() {
+	public static void PostEvents() {
 		if( _events.Count == 0 ) return;
 
 		var payload = string.Format(
@@ -93,6 +92,8 @@ public class EaseEvent {
 			SessionID,
 			string.Join( "\n", _events.ToArray() )
 		);
+
+		_events.Clear();
 
 		var url = string.Format(
 			@"{0}/client/{1}/events",

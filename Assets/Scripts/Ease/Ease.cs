@@ -1,7 +1,9 @@
+using System.Collections;
 using UnityEngine;
 
 public class Ease : MonoBehaviour {
 
+	public float PushInterval = 2.0f;
 	public bool LogEvents = true;
 
 	void Awake() {
@@ -13,6 +15,14 @@ public class Ease : MonoBehaviour {
 	void Start() {
 		//Debug.Log( SystemInfo.systemMemorySize );
 		EaseEvent.SessionBegin();
+		StartCoroutine( PushEvents() );
+	}
+
+	IEnumerator PushEvents() {
+		for(;;) {
+			yield return new WaitForSeconds( PushInterval );
+			EaseEvent.PostEvents();
+		}
 	}
 
 	void Update() {

@@ -20,8 +20,8 @@ public class EaseEvent {
 
 	private static List<string> _events = new List<string>();
 
-	public static void SessionBegin() {
-		AddEvent( "SB",
+	public static void SessionStart() {
+		AddEvent( "ST",
 			DeTab( SystemInfo.deviceUniqueIdentifier ),
 			"TODO: HMD Name",
 			"TODO: HMD Version",
@@ -41,8 +41,8 @@ public class EaseEvent {
 		System.Threading.Thread.Sleep( 1000 );  // TODO: TEMP HACK
 	}
 
-	public static void MarkerRegister( bool register, string name, Transform transform ) {
-		AddEvent( register ? "MA" : "MR",
+	public static void MarkerAdd( bool add, string name, Transform transform ) {
+		AddEvent( add ? "MA" : "MR",
 			DeTab( name ),
 			PosStr( transform.position.x ),
 			PosStr( transform.position.y ),
@@ -50,7 +50,7 @@ public class EaseEvent {
 		);
 	}
 
-	// TODO: This is basically the same as MarkerRegister right now, but may change
+	// TODO: This is basically the same as MarkerAdd right now, but may change
 	public static void MarkerEnter( bool enter, string name, Transform transform ) {
 		AddEvent( enter ? "ME" : "MX",
 			DeTab( name ),

@@ -14,7 +14,7 @@ public class Ease : MonoBehaviour {
 
 	void Start() {
 		//Debug.Log( SystemInfo.systemMemorySize );
-		EaseEvent.SessionBegin();
+		EaseEvent.SessionStart();
 		StartCoroutine( PushEvents() );
 	}
 

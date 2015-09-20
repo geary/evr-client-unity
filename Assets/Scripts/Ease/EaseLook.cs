@@ -34,7 +34,11 @@ public class EaseLook : MonoBehaviour {
 		_lastUpdateTime = time;
 		if( ! transform.hasChanged ) return;
 		transform.hasChanged = false;
-		EaseEvent.Presence( transform, _fpsFrames / _fpsDeltaTime );
+		EaseEvent.Presence(
+			transform,
+			_fpsFrames / _fpsDeltaTime,
+			Profiler.usedHeapSize
+		);
 	}
 
 	void UpdateMarkers() {

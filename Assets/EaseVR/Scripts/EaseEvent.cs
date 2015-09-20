@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using UnityEngine;
 
+namespace EaseVR {
 
 public class EaseEvent {
 
@@ -136,4 +137,6 @@ public class EaseEvent {
 	private static string PosStr( float x ) {
 		return x.ToString();  // TODO: precision
 	}
+}
+
 }

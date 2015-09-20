@@ -336,6 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41b3522504c64d688249fcb597bfa32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PushInterval: 2
   LogEvents: 1
 --- !u!4 &1180875975
 Transform:

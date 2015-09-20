@@ -14,6 +14,8 @@
 using System;
 using System.Globalization;
 
+namespace EaseVR {
+
 static class PushID {
 
 	// Modeled after base64 web-safe chars, but ordered by ASCII.
@@ -76,3 +78,5 @@ static class PushID {
 		return DateTime.UtcNow.Subtract(Epoch).TotalMilliseconds;
 	}
 };
+
+}

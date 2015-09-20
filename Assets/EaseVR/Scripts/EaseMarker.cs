@@ -1,8 +1,9 @@
 using UnityEngine;
 
 
-[RequireComponent( typeof(Collider) )]
+namespace EaseVR {
 
+[RequireComponent( typeof(Collider) )]
 public class EaseMarker : MonoBehaviour {
 
 	//private bool _debug;
@@ -59,4 +60,6 @@ public class EaseMarker : MonoBehaviour {
 			distance
 		);
 	}
+}
+
 }

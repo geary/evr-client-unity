@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 
+namespace EaseVR {
+
 public class Ease : MonoBehaviour {
 
 	public float PushInterval = 2.0f;
@@ -40,5 +42,7 @@ public class Ease : MonoBehaviour {
 			System.DateTime.Now.ToString("yyyyMMddHHmmssffff")
 		);
 	}
+
+}
 
 }

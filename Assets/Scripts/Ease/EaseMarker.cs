@@ -25,9 +25,6 @@ public class EaseMarker : MonoBehaviour {
 		EaseEvent.MarkerAdd( true, MarkerName, transform );
 	}
 
-	void Update() {
-	}
-
 	public void OnLookStart( RaycastHit hit, string name ) {
 		//Dictionary< string, string > eventData;
 

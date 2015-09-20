@@ -12,6 +12,8 @@ public class EaseLook : MonoBehaviour {
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
 
 	private float _lastUpdateTime = 0;
+	private float _fpsDeltaTime = 0;
+	private float _fpsFrames = 0;
 
 	private string _log;
 
@@ -25,12 +27,14 @@ public class EaseLook : MonoBehaviour {
 	}
 
 	private void UpdatePresence() {
+		_fpsFrames++;
+		_fpsDeltaTime += Time.smoothDeltaTime;
 		var time = Time.time;
 		if( time - _lastUpdateTime < UpdateInterval ) return;
 		_lastUpdateTime = time;
 		if( ! transform.hasChanged ) return;
 		transform.hasChanged = false;
-		EaseEvent.Presence( transform );
+		EaseEvent.Presence( transform, _fpsFrames / _fpsDeltaTime );
 	}
 
 	void UpdateMarkers() {

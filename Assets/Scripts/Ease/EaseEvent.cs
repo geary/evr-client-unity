@@ -60,7 +60,7 @@ public class EaseEvent {
 		);
 	}
 
-	public static void Presence( Transform transform ) {
+	public static void Presence( Transform transform, float framesPerSecond ) {
 		AddEvent( "P",
 			PosStr( transform.position.x ),
 			PosStr( transform.position.y ),
@@ -68,7 +68,7 @@ public class EaseEvent {
 			PosStr( transform.eulerAngles.x ),
 			PosStr( transform.eulerAngles.y ),
 			PosStr( transform.eulerAngles.z ),
-			"99",  // TODO
+			framesPerSecond.ToString( "F1" ),
 			"0"  // TODO
 		);
 	}

@@ -19,6 +19,11 @@ public class EaseEvent {
 	private static readonly DateTime JavaScriptEpoch =
 		new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
+	private static readonly double JavaScriptStartTimeMilliseconds =
+		Math.Floor(
+			DateTime.UtcNow.Subtract( JavaScriptEpoch ).TotalMilliseconds
+		);
+
 	private static List<string> _events = new List<string>();
 
 	public static void SessionStart() {
@@ -91,7 +96,8 @@ public class EaseEvent {
 		if( _events.Count == 0 ) return;
 
 		var payload = string.Format(
-			"H\t {0}\t{1}\t{2}\n{3}",
+			"H\t {0}\t{1}\t{2}\t{3}\n{4}",
+			JavaScriptStartTimeMilliseconds,
 			"0",
 			"mike_APIKEY",
 			SessionID,
@@ -124,10 +130,12 @@ public class EaseEvent {
 		Debug.Log( text );
 	}
 
-	private static string TimeStamp() {
-		return DateTime.UtcNow
-			.Subtract(JavaScriptEpoch).TotalMilliseconds
-			.ToString( "F0", CultureInfo.InvariantCulture );
+	private static double TimeStamp() {
+		var ms = DateTime.UtcNow
+			.Subtract( JavaScriptEpoch )
+			.TotalMilliseconds;
+		
+		return Math.Floor( ms - JavaScriptStartTimeMilliseconds );
 	}
 
 	private static string DeTab( string str ) {

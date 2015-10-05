@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using UnityEngine;
+using UnityEngine.VR;
 
 namespace EaseVR {
 
 public class EaseEvent {
 
 	public static string SessionID;
+
+	private static Ease _ease;
 
 	private static bool _debug = true;
 	private static string _apiUrl = _debug ?
@@ -29,8 +32,10 @@ public class EaseEvent {
 	public static void SessionStart() {
 		AddEvent( "ST",
 			DeTab( SystemInfo.deviceUniqueIdentifier ),
-			"TODO: HMD Name",
-			"TODO: HMD Version",
+			//"TODO: HMD Name",
+			//"TODO: HMD Version",
+			VRDevice.family,
+			VRDevice.model,
 			DeTab( SystemInfo.operatingSystem ),
 			DeTab( SystemInfo.processorType ),
 			SystemInfo.processorCount.ToString(),
@@ -39,6 +44,7 @@ public class EaseEvent {
 			SystemInfo.graphicsMemorySize.ToString(),
 			DeTab( SystemInfo.graphicsDeviceVersion )
 		);
+		PostEvents();
 	}
 
 	public static void SessionEnd() {
@@ -93,13 +99,17 @@ public class EaseEvent {
 	}
 
 	public static void PostEvents() {
+		if( _ease == null ) {
+			_ease = GameObject.Find( "EaseVR" ).GetComponent<Ease>();
+		}
+
 		if( _events.Count == 0 ) return;
 
 		var payload = string.Format(
 			"H\t {0}\t{1}\t{2}\t{3}\n{4}",
 			JavaScriptStartTimeMilliseconds,
 			"0",
-			"mike_APIKEY",
+			_ease.ApiKey,
 			SessionID,
 			string.Join( "\n", _events.ToArray() )
 		);
@@ -109,7 +119,7 @@ public class EaseEvent {
 		var url = string.Format(
 			@"{0}/client/{1}/events",
 			_apiUrl,
-			"GUID_TODO"
+			_ease.AppGuid
 		);
 		
 		var www = new WWW( url, Encoding.UTF8.GetBytes(payload) );

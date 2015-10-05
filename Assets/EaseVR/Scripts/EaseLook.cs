@@ -6,9 +6,7 @@ namespace EaseVR {
 
 public class EaseLook : MonoBehaviour {
 
-	public float UpdateInterval = 0.1f;
-	public bool SeeThrough = false;  // TODO: Make this a marker property?
-
+	private Ease _ease;
 	private List<RaycastHit> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
 
@@ -18,7 +16,8 @@ public class EaseLook : MonoBehaviour {
 
 	private string _log;
 
-	void Start() {
+	void Awake() {
+		_ease = GameObject.Find( "EaseVR" ).GetComponent<Ease>();
 		_lookedAt = new List<RaycastHit>();
 	}
 
@@ -31,7 +30,7 @@ public class EaseLook : MonoBehaviour {
 		_fpsFrames++;
 		_fpsDeltaTime += Time.smoothDeltaTime;
 		var time = Time.time;
-		if( time - _lastUpdateTime < UpdateInterval ) return;
+		if( time - _lastUpdateTime < _ease.UpdateInterval ) return;
 		_lastUpdateTime = time;
 		if( ! transform.hasChanged ) return;
 		transform.hasChanged = false;
@@ -46,7 +45,7 @@ public class EaseLook : MonoBehaviour {
 		var ray = GetComponentInParent<Camera>().ViewportPointToRay( _forward );
 		var hits = Physics.RaycastAll( ray );
 
-		if( ! SeeThrough  &&  hits.Count() > 0 ) {
+		if( ! _ease.SeeThrough  &&  hits.Count() > 0 ) {
 #if false
 			hits = new[] {
 				hits.Aggregate(

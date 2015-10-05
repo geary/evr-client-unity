@@ -5,8 +5,12 @@ namespace EaseVR {
 
 public class Ease : MonoBehaviour {
 
+	public string ApiKey = "Your-API-Key";
+	public string AppGuid = "Your-App-GUID";
 	public float PushInterval = 2.0f;
 	public bool LogEvents = true;
+	public float UpdateInterval = 0.1f;
+	public bool SeeThrough = false;  // TODO: Make this a marker property?
 
 	void Awake() {
 		//Debug.Log( "Ease Analytics Initializing..." );

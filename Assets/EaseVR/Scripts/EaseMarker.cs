@@ -17,7 +17,12 @@ public class EaseMarker : MonoBehaviour {
 	//public string CustomProp02;
 	//public string CustomProp03;
 
+	private EaseSettings _ease;
 	private bool _looking;
+
+	void Awake() {
+		_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
+	}
 
 	void Start() {
 		if( MarkerName.Length == 0 ) {
@@ -36,7 +41,9 @@ public class EaseMarker : MonoBehaviour {
 
 		EaseEvent.MarkerEnter( true, MarkerName, transform );
 
-		GetComponent<Renderer>().material.color = Color.red;
+		if( _ease.HighlightMarkers ) {
+			GetComponent<Renderer>().material.color = Color.red;
+		}
 	}
 
 	public void OnLookEnd( RaycastHit hit, string name ) {
@@ -47,7 +54,9 @@ public class EaseMarker : MonoBehaviour {
 
 		EaseEvent.MarkerEnter( false, MarkerName, transform );
 
-		GetComponent<Renderer>().material.color = Color.gray;
+		if( _ease.HighlightMarkers ) {
+			GetComponent<Renderer>().material.color = Color.gray;
+		}
 	}
 
 	private string MarkerTimeStampJson( string eventName, float distance ) {

@@ -12,7 +12,7 @@ public class EaseEvent {
 
 	public static string SessionID;
 
-	private static Ease _ease;
+	private static EaseSettings _ease;
 
 	private static bool _debug = true;
 	private static string _apiUrl = _debug ?
@@ -100,7 +100,7 @@ public class EaseEvent {
 
 	public static void PostEvents() {
 		if( _ease == null ) {
-			_ease = GameObject.Find( "EaseVR" ).GetComponent<Ease>();
+			_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
 		}
 
 		if( _events.Count == 0 ) return;
@@ -119,7 +119,7 @@ public class EaseEvent {
 		var url = string.Format(
 			@"{0}/client/{1}/events",
 			_apiUrl,
-			_ease.AppGuid
+			_ease.ExperienceID
 		);
 		
 		var www = new WWW( url, Encoding.UTF8.GetBytes(payload) );

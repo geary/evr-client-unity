@@ -6,7 +6,7 @@ namespace EaseVR {
 
 public class EaseLook : MonoBehaviour {
 
-	private Ease _ease;
+	private EaseSettings _ease;
 	private List<RaycastHit> _lookedAt;
 	private readonly Vector3 _forward = new Vector3( 0.5f, 0.5f, 0f );
 
@@ -17,7 +17,7 @@ public class EaseLook : MonoBehaviour {
 	private string _log;
 
 	void Awake() {
-		_ease = GameObject.Find( "EaseVR" ).GetComponent<Ease>();
+		_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
 		_lookedAt = new List<RaycastHit>();
 	}
 
@@ -30,7 +30,7 @@ public class EaseLook : MonoBehaviour {
 		_fpsFrames++;
 		_fpsDeltaTime += Time.smoothDeltaTime;
 		var time = Time.time;
-		if( time - _lastUpdateTime < _ease.UpdateInterval ) return;
+		if( time - _lastUpdateTime < _ease.PresenceInterval ) return;
 		_lastUpdateTime = time;
 		if( ! transform.hasChanged ) return;
 		transform.hasChanged = false;

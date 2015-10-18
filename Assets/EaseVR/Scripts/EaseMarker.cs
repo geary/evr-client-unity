@@ -19,6 +19,7 @@ namespace EaseVR {
 
 		private EaseSettings _ease;
 		private bool _looking;
+		private Color _saveColor;
 
 		void Awake() {
 			_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
@@ -41,8 +42,10 @@ namespace EaseVR {
 
 			EaseEvent.MarkerEnter( true, MarkerName, transform );
 
+			var material = GetComponent<Renderer>().material;
+			_saveColor = material.color;
 			if( _ease.HighlightMarkers ) {
-				GetComponent<Renderer>().material.color = Color.red;
+				material.color = _ease.HighlightColor;
 			}
 		}
 
@@ -55,7 +58,7 @@ namespace EaseVR {
 			EaseEvent.MarkerEnter( false, MarkerName, transform );
 
 			if( _ease.HighlightMarkers ) {
-				GetComponent<Renderer>().material.color = Color.gray;
+				GetComponent<Renderer>().material.color = _saveColor;
 			}
 		}
 

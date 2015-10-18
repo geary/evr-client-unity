@@ -5,69 +5,69 @@ namespace EaseVR {
 
 public class EaseSettings : MonoBehaviour {
 
-	[Header( "Authentication" )]
+		[Header( "Authentication" )]
 
-	[Tooltip( "Your API key from the Ease VR Dashboard" )]
-	public string ApiKey = "Your-API-Key";
-	[Tooltip( "This experience's ID from the Ease VR Dashboard" )]
-	public string ExperienceID = "Experience-ID";
+		[Tooltip( "Your API key from the Ease VR Dashboard" )]
+		public string ApiKey = "Your-API-Key";
+		[Tooltip( "This experience's ID from the Ease VR Dashboard" )]
+		public string ExperienceID = "Experience-ID";
 
-	[Header( "Timing" )]
+		[Header( "Timing" )]
 
-	[Tooltip( "How often to record Presence (seconds)" )]
-	public float PresenceInterval = 0.1f;
-	[Tooltip( "How often to push data to the Ease VR server (seconds)" )]
-	public float PushInterval = 2.0f;
+		[Tooltip( "How often to record Presence (seconds)" )]
+		public float PresenceInterval = 0.1f;
+		[Tooltip( "How often to push data to the Ease VR server (seconds)" )]
+		public float PushInterval = 2.0f;
 
-	[Header( "Markers" )]
+		[Header( "Markers" )]
 
-	[Tooltip( "Check to select all markers in the line of sight,\nuncheck to select only the nearest marker" )]
-	public bool SeeThrough = false;  // TODO: Make this a marker property?
+		[Tooltip( "Check to select all markers in the line of sight,\nuncheck to select only the nearest marker" )]
+		public bool SeeThrough = false;  // TODO: Make this a marker property?
 
-	[Header( "Debug" )]
+		[Header( "Debug" )]
 
-	[Tooltip( "Log Ease VR events to the console?" )]
-	public bool LogEvents = false;
-	[Tooltip( "Highlight active markers for debugging?" )]
-	public bool HighlightMarkers = false;
-	[Tooltip( "Active marker highlight color\n(if Highlight Markers is checked)" )]
-	public Color HighlightColor = Color.red;
+		[Tooltip( "Log Ease VR events to the console?" )]
+		public bool LogEvents = false;
+		[Tooltip( "Highlight active markers for debugging?" )]
+		public bool HighlightMarkers = false;
+		[Tooltip( "Active marker highlight color\n(if Highlight Markers is checked)" )]
+		public Color HighlightColor = Color.red;
 
-	void Awake() {
-		//Debug.Log( "Ease Analytics Initializing..." );
-		EaseEvent.SessionID = PushID.Generate();
-	}
-
-	void Start() {
-		//Debug.Log( SystemInfo.systemMemorySize );
-		EaseEvent.SessionStart();
-		StartCoroutine( PushEvents() );
-	}
-
-	IEnumerator PushEvents() {
-		for(;;) {
-			yield return new WaitForSeconds( PushInterval );
-			EaseEvent.PostEvents();
+		void Awake() {
+			//Debug.Log( "Ease Analytics Initializing..." );
+			EaseEvent.SessionID = PushID.Generate();
 		}
-	}
 
-	void Update() {
-	}
+		void Start() {
+			//Debug.Log( SystemInfo.systemMemorySize );
+			EaseEvent.SessionStart();
+			StartCoroutine( PushEvents() );
+		}
 
-	void OnApplicationQuit() {
-		//Debug.Log( "Ease Analytics exiting..." );
-		EaseEvent.SessionEnd();
-	}
+		IEnumerator PushEvents() {
+			for(;;) {
+				yield return new WaitForSeconds( PushInterval );
+				EaseEvent.PostEvents();
+			}
+		}
 
-	public static string TimeStampJson( string eventName ) {
-		return string.Format(
-			@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}""}}",
-			eventName,
-			SystemInfo.deviceUniqueIdentifier,
-			System.DateTime.Now.ToString("yyyyMMddHHmmssffff")
-		);
-	}
+		void Update() {
+		}
 
-}
+		void OnApplicationQuit() {
+			//Debug.Log( "Ease Analytics exiting..." );
+			EaseEvent.SessionEnd();
+		}
+
+		public static string TimeStampJson( string eventName ) {
+			return string.Format(
+				@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}""}}",
+				eventName,
+				SystemInfo.deviceUniqueIdentifier,
+				System.DateTime.Now.ToString("yyyyMMddHHmmssffff")
+			);
+		}
+
+	}
 
 }

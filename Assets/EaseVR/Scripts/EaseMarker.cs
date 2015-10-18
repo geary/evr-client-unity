@@ -3,72 +3,72 @@ using UnityEngine;
 
 namespace EaseVR {
 
-[RequireComponent( typeof(Collider) )]
-public class EaseMarker : MonoBehaviour {
+	[RequireComponent( typeof(Collider) )]
+	public class EaseMarker : MonoBehaviour {
 
-	//private bool _debug;
+		//private bool _debug;
 
-	public string MarkerName;
-	public string ObjectName;
-	public bool IsObject;
-	public bool Inside;
-	public bool DayTime;
-	//public string CustomProp01;
-	//public string CustomProp02;
-	//public string CustomProp03;
+		public string MarkerName;
+		public string ObjectName;
+		public bool IsObject;
+		public bool Inside;
+		public bool DayTime;
+		//public string CustomProp01;
+		//public string CustomProp02;
+		//public string CustomProp03;
 
-	private EaseSettings _ease;
-	private bool _looking;
+		private EaseSettings _ease;
+		private bool _looking;
 
-	void Awake() {
-		_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
-	}
-
-	void Start() {
-		if( MarkerName.Length == 0 ) {
-			MarkerName = GetInstanceID().ToString();
+		void Awake() {
+			_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
 		}
-		EaseEvent.MarkerAdd( true, MarkerName, transform );
-	}
 
-	public void OnLookStart( RaycastHit hit, string name ) {
-		//Dictionary< string, string > eventData;
+		void Start() {
+			if( MarkerName.Length == 0 ) {
+				MarkerName = GetInstanceID().ToString();
+			}
+			EaseEvent.MarkerAdd( true, MarkerName, transform );
+		}
 
-		if( _looking ) return;
-		_looking = true;
+		public void OnLookStart( RaycastHit hit, string name ) {
+			//Dictionary< string, string > eventData;
 
-		//Debug.Log( "Ease Marker In <" + name + ">" );
+			if( _looking ) return;
+			_looking = true;
 
-		EaseEvent.MarkerEnter( true, MarkerName, transform );
+			//Debug.Log( "Ease Marker In <" + name + ">" );
 
-		if( _ease.HighlightMarkers ) {
-			GetComponent<Renderer>().material.color = Color.red;
+			EaseEvent.MarkerEnter( true, MarkerName, transform );
+
+			if( _ease.HighlightMarkers ) {
+				GetComponent<Renderer>().material.color = Color.red;
+			}
+		}
+
+		public void OnLookEnd( RaycastHit hit, string name ) {
+			if( ! _looking ) return;
+			_looking = false;
+
+			//Debug.Log( "Ease Marker Out <" + name + ">" );
+
+			EaseEvent.MarkerEnter( false, MarkerName, transform );
+
+			if( _ease.HighlightMarkers ) {
+				GetComponent<Renderer>().material.color = Color.gray;
+			}
+		}
+
+		private string MarkerTimeStampJson( string eventName, float distance ) {
+			return string.Format(
+				@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}"",""name"":""{3}"",""distance"":{4}}}",
+				eventName,
+				SystemInfo.deviceUniqueIdentifier,
+				System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+				name,
+				distance
+			);
 		}
 	}
-
-	public void OnLookEnd( RaycastHit hit, string name ) {
-		if( ! _looking ) return;
-		_looking = false;
-
-		//Debug.Log( "Ease Marker Out <" + name + ">" );
-
-		EaseEvent.MarkerEnter( false, MarkerName, transform );
-
-		if( _ease.HighlightMarkers ) {
-			GetComponent<Renderer>().material.color = Color.gray;
-		}
-	}
-
-	private string MarkerTimeStampJson( string eventName, float distance ) {
-		return string.Format(
-			@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}"",""name"":""{3}"",""distance"":{4}}}",
-			eventName,
-			SystemInfo.deviceUniqueIdentifier,
-			System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-			name,
-			distance
-		);
-	}
-}
 
 }

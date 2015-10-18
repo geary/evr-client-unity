@@ -60,15 +60,6 @@ public class EaseSettings : MonoBehaviour {
 			EaseEvent.SessionEnd();
 		}
 
-		public static string TimeStampJson( string eventName ) {
-			return string.Format(
-				@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}""}}",
-				eventName,
-				SystemInfo.deviceUniqueIdentifier,
-				System.DateTime.Now.ToString("yyyyMMddHHmmssffff")
-			);
-		}
-
 	}
 
 }

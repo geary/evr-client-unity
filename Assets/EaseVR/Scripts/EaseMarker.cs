@@ -62,16 +62,6 @@ namespace EaseVR {
 			}
 		}
 
-		private string MarkerTimeStampJson( string eventName, float distance ) {
-			return string.Format(
-				@"{{""event"":""{0}"",""uuid"":""{1}"",""timestamp"":""{2}"",""name"":""{3}"",""distance"":{4}}}",
-				eventName,
-				SystemInfo.deviceUniqueIdentifier,
-				System.DateTime.Now.ToString("yyyyMMddHHmmssffff"),
-				name,
-				distance
-			);
-		}
 	}
 
 }

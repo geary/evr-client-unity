@@ -31,6 +31,7 @@ public class EaseSettings : MonoBehaviour {
 		[Tooltip( "Highlight active markers for debugging?" )]
 		public bool HighlightMarkers = false;
 		[Tooltip( "Active marker highlight color\n(if Highlight Markers is checked)" )]
+		[ColorUsage( false )]
 		public Color HighlightColor = Color.red;
 
 		void Awake() {

@@ -9,10 +9,10 @@ namespace EaseVR {
 		//private bool _debug;
 
 		public string MarkerName;
-		public string ObjectName;
-		public bool IsObject;
-		public bool Inside;
-		public bool DayTime;
+		//public string ObjectName;
+		//public bool IsObject;
+		//public bool Inside;
+		//public bool DayTime;
 		//public string CustomProp01;
 		//public string CustomProp02;
 		//public string CustomProp03;

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,10 +10,20 @@ namespace EaseVR {
 		private static string _easeObjName = "EaseVR";
 		private static string _easeLookObjName = "EaseLook";
 
-		[MenuItem( "Ease/Setup" )]
+		[MenuItem( "Ease/Setup", false, 1 )]
 		public static void Setup() {
 			AddSettings();
 			AddLook();
+		}
+
+		[MenuItem( "Ease/Build EaseVR Unity Package", false, 51 )]
+		public static void BuildUnityPackage() {
+			Directory.CreateDirectory( "Build" );
+			AssetDatabase.ExportPackage(
+				"Assets/EaseVR",
+				"Build/EaseVR.unitypackage",
+				ExportPackageOptions.Recurse
+			);
 		}
 
 		private static void AddSettings() {

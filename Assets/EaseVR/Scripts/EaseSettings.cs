@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace EaseVR {
 
-public class EaseSettings : MonoBehaviour {
+	public class EaseSettings : MonoBehaviour {
 
 		[Header( "Authentication" )]
 
 		[Tooltip( "Your API key from the Ease VR Dashboard" )]
 		public string ApiKey = "Your-API-Key";
 		[Tooltip( "This experience's ID from the Ease VR Dashboard" )]
-		public string ExperienceID = "Experience-ID";
+		public string ExperienceID = "Your-Experience-ID";
 
 		[Header( "Timing" )]
 

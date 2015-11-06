@@ -6,8 +6,6 @@ namespace EaseVR {
 	[RequireComponent( typeof(Collider) )]
 	public class EaseMarker : MonoBehaviour {
 
-		//private bool _debug;
-
 		public string MarkerName;
 		//public string ObjectName;
 		//public bool IsObject;

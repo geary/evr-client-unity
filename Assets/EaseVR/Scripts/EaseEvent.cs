@@ -32,8 +32,6 @@ namespace EaseVR {
 		public static void SessionStart() {
 			AddEvent( "ST",
 				DeTab( SystemInfo.deviceUniqueIdentifier ),
-				//"TODO: HMD Name",
-				//"TODO: HMD Version",
 				VRDevice.family,
 				VRDevice.model,
 				DeTab( SystemInfo.operatingSystem ),
@@ -127,17 +125,6 @@ namespace EaseVR {
 			//yield return www;
 			//var text = www.text;
 			//Debug.Log( text );
-		}
-
-		private static IEnumerator ApiPostRoutine(
-			string endpoint,
-			WWWForm form
-		) {
-			var url = _apiUrl + "GUID_TODO" + "/" + endpoint;
-			var www = new WWW( url, form );
-			yield return www;
-			var text = www.text;
-			Debug.Log( text );
 		}
 
 		private static double TimeStamp() {

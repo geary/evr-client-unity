@@ -27,7 +27,8 @@ namespace EaseVR {
 		[Header( "Debug" )]
 
 		[Tooltip( "Log Ease VR events to the console?" )]
-		public bool LogEvents = false;
+		public bool LogPresenceEvents = false;
+		public bool LogOtherEvents = false;
 		[Tooltip( "Highlight active markers for debugging?" )]
 		public bool HighlightMarkers = false;
 		[Tooltip( "Active marker highlight color\n(if Highlight Markers is checked)" )]

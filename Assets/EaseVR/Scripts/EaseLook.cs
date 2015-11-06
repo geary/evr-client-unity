@@ -38,6 +38,17 @@ namespace EaseVR {
 				_fpsFrames / _fpsDeltaTime,
 				Profiler.usedHeapSize
 			);
+			if( _ease.LogPresenceEvents ) {
+				var position = transform.position;
+				var angles = transform.eulerAngles;
+				Debug.Log(
+					"EASE Presence: " +
+					_fpsFrames / _fpsDeltaTime + " fps, " +
+					Profiler.usedHeapSize + " bytes, " +
+					"position:(" + position.x + "," + position.y + "," + position.z + "), " +
+					"rotation:(" + angles.x + "," + angles.y + "," + angles.z + ")"
+				);
+			}
 		}
 
 		void UpdateMarkers() {
@@ -46,23 +57,16 @@ namespace EaseVR {
 
 			if( ! _ease.SeeThrough  &&  hits.Length > 0 ) {
 				var near = hits[0];
-				if( _ease.LogEvents ) {
-					var log = "";
-					foreach( var hit in hits ) {
-						log += hit.transform.name + ": " + hit.distance + "   ";
-						if( hit.distance < near.distance )
-							near = hit;
-					}
-					if( log != _log ) {
-						_log = log;
-						Debug.Log( log );
-					}
-				} else {
-					foreach( var hit in hits ) {
-						if( hit.distance < near.distance )
-							near = hit;
-					}
+				//var log = "";
+				foreach( var hit in hits ) {
+					//log += "EASE hit: " + hit.transform.name + ": " + hit.distance + "   ";
+					if( hit.distance < near.distance )
+						near = hit;
 				}
+				//if( log != _log ) {
+				//	_log = log;
+				//	Debug.Log( log );
+				//}
 				hits = new RaycastHit[] { near };
 			}
 
@@ -90,8 +94,8 @@ namespace EaseVR {
 			}
 
 			if( shouldAdd ) {
-				if( _ease.LogEvents ) {
-					Debug.Log( "Adding marker with id: " + marker.GetInstanceID() );
+				if( _ease.LogOtherEvents ) {
+					Debug.Log( "EASE Enter marker " + easeMarker.MarkerName );
 				}
 
 				_lookedAt.Add( hit );
@@ -124,8 +128,8 @@ namespace EaseVR {
 				var exitedMarker =
 					exitedHit.transform.gameObject.GetComponent<EaseMarker>();
 				if( exitedMarker ) {
-					if( _ease.LogEvents ) {
-						Debug.Log( "Removing marker with id: " + exitedMarker.GetInstanceID() );
+					if( _ease.LogOtherEvents ) {
+						Debug.Log( "EASE Exit marker " + exitedMarker.MarkerName );
 					}
 					exitedMarker.OnLookEnd( exitedHit, exitedMarker.MarkerName );
 					_lookedAt.Remove( exitedHit );

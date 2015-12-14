@@ -1,3 +1,10 @@
+/**
+ * Ease Analytics Plugin for Unity
+ * Copyright (c) 2014-2015 by Ease VR, Inc. All Rights Reserved.
+ * Licensed under the terms of the Apache Public License
+ * Please see the LICENSE included with this distribution for details.
+ */
+ 
 // PushID.cs
 // Based on generate-pushid.js:
 // https://gist.github.com/mikelehen/3596a30bd69384624c11
@@ -14,7 +21,7 @@
 using System;
 using System.Globalization;
 
-namespace EaseVR {
+namespace EaseAnalytics {
 
 	static class PushID {
 

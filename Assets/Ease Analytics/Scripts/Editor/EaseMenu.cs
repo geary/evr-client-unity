@@ -1,27 +1,34 @@
+/**
+ * Ease Analytics Plugin for Unity
+ * Copyright (c) 2014-2015 by Ease VR, Inc. All Rights Reserved.
+ * Licensed under the terms of the Apache Public License
+ * Please see the LICENSE included with this distribution for details.
+ */
+ 
 using System.Collections;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace EaseVR {
+namespace EaseAnalytics {
 
 	public class EaseMenu : MonoBehaviour {
 
-		private static string _easeObjName = "EaseVR";
+		private static string _easeObjName = "EaseAnalytics";
 		private static string _easeLookObjName = "EaseLook";
 
-		[MenuItem( "Ease/Setup", false, 1 )]
+		[MenuItem( "Ease Analytics/Setup", false, 1 )]
 		public static void Setup() {
 			AddSettings();
 			AddLook();
 		}
 
-		[MenuItem( "Ease/Build EaseVR Unity Package", false, 51 )]
+		[MenuItem( "Ease Analytics/Build Ease Analytics Unity Package", false, 51 )]
 		public static void BuildUnityPackage() {
 			Directory.CreateDirectory( "Build" );
 			AssetDatabase.ExportPackage(
-				"Assets/EaseVR",
-				"Build/EaseVR.unitypackage",
+				"Assets/EaseAnalytics",
+				"Build/EaseAnalytics.unitypackage",
 				ExportPackageOptions.Recurse
 			);
 		}

@@ -1,3 +1,10 @@
+/**
+ * Ease Analytics Plugin for Unity
+ * Copyright (c) 2014-2015 by Ease VR, Inc. All Rights Reserved.
+ * Licensed under the terms of the Apache Public License
+ * Please see the LICENSE included with this distribution for details.
+ */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +13,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.VR;
 
-namespace EaseVR {
+namespace EaseAnalytics {
 
 	public class EaseEvent {
 
@@ -14,9 +21,9 @@ namespace EaseVR {
 
 		private static EaseSettings _ease;
 
-		private static bool _debug = true;
+		private static bool _debug = false;
 		private static string _apiUrl = _debug ?
-			"http://mikebook:8080/v1" :
+			"http://localhost:8080/v1" :
 			"http://api.easevr.com/v1";
 
 		private static readonly DateTime JavaScriptEpoch =
@@ -75,16 +82,17 @@ namespace EaseVR {
 			float framesPerSecond,
 			uint memoryUsed
 		) {
-			AddEvent( "P",
-				PosStr( transform.position.x ),
-				PosStr( transform.position.y ),
-				PosStr( transform.position.z ),
-				PosStr( transform.eulerAngles.x ),
-				PosStr( transform.eulerAngles.y ),
-				PosStr( transform.eulerAngles.z ),
-				framesPerSecond.ToString( "F1" ),
-				memoryUsed.ToString()
-			);
+			// #TODO: Calling this event is not ccurrently publically supported and requests will be blocked. fred@easevr.com
+			// AddEvent( "P",
+			// 	PosStr( transform.position.x ),
+			// 	PosStr( transform.position.y ),
+			// 	PosStr( transform.position.z ),
+			// 	PosStr( transform.eulerAngles.x ),
+			// 	PosStr( transform.eulerAngles.y ),
+			// 	PosStr( transform.eulerAngles.z ),
+			// 	framesPerSecond.ToString( "F1" ),
+			// 	memoryUsed.ToString()
+			// );
 		}
 
 		private static void AddEvent( string type, params string[] values ) {
@@ -98,7 +106,7 @@ namespace EaseVR {
 
 		public static void PostEvents() {
 			if( _ease == null ) {
-				_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
+				_ease = GameObject.Find( "EaseAnalytics" ).GetComponent<EaseSettings>();
 			}
 
 			if( _events.Count == 0 ) return;

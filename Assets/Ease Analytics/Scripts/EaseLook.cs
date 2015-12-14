@@ -1,7 +1,14 @@
+/**
+ * Ease Analytics Plugin for Unity
+ * Copyright (c) 2014-2015 by Ease VR, Inc. All Rights Reserved.
+ * Licensed under the terms of the Apache Public License
+ * Please see the LICENSE included with this distribution for details.
+ */
+ 
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EaseVR {
+namespace EaseAnalytics {
 
 	public class EaseLook : MonoBehaviour {
 
@@ -16,7 +23,7 @@ namespace EaseVR {
 		private string _log;
 
 		void Awake() {
-			_ease = GameObject.Find( "EaseVR" ).GetComponent<EaseSettings>();
+			_ease = GameObject.Find( "EaseAnalytics" ).GetComponent<EaseSettings>();
 			_lookedAt = new List<RaycastHit>();
 		}
 
